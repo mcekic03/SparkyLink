@@ -1,0 +1,27 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    # Level 9 is the highest level
+    level: 5
+
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::createToken\(\)#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$password#'
+        - '#Match expression does not handle remaining value: string#'
+        - '#Call to an undefined method Laravel\\Sanctum\\Contracts\\HasAbilities::delete\(\).#'
+        - '#Call to an undefined method App\\Models\\User::hasAnyRole\(\).#'
+        - '#Call to an undefined method App\\Models\\User::hasRole\(\).#'
+        - '#Access to an undefined property App\\Models\\User::\$role_id.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::getMediaStorageSubdirectory\(\).#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::getCascadeFileFields\(\).#'
+        - '#Access to an undefined property Illuminate\Database\Eloquent\Model::\$path.#'
+#
+#    excludePaths:
+#        - ./*/*/FileToBeExcluded.php
+#
+#    checkMissingIterableValueType: false

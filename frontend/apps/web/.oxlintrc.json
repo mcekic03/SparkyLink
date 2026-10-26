@@ -1,0 +1,49 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "import", "unicorn", "oxc", "promise"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "options": {
+    "typeAware": true
+  },
+  "ignorePatterns": ["src/routeTree.gen.ts", "dist"],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/await-thenable": "error",
+    "typescript/no-unnecessary-condition": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-for-in-array": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "typescript/consistent-type-imports": "error",
+    "typescript/no-duplicate-enum-values": "error",
+    "typescript/no-misused-new": "error",
+    "typescript/prefer-as-const": "error",
+
+    "import/first": "error",
+    "import/no-duplicates": "error",
+
+    "react/react-in-jsx-scope": "off",
+    "react/no-children-prop": "off",
+
+    "import/no-unassigned-import": "off",
+    "import/no-named-as-default-member": "off",
+    "import/no-cycle": "off",
+
+    "typescript/array-type": "off",
+    "typescript/require-await": "off",
+
+    "unicorn/prefer-top-level-await": "off",
+    "unicorn/no-useless-undefined": "off",
+    "unicorn/prefer-query-selector": "off",
+
+    "eslint/sort-imports": "off",
+    "eslint/no-inline-comments": "off"
+  }
+}

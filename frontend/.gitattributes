@@ -1,0 +1,15 @@
+* text=auto eol=lf
+
+*.md diff=markdown
+
+# Skripte i Docker fajlovi koji se izvrsavaju u kontejneru moraju imati LF
+*.sh text eol=lf
+Dockerfile* text eol=lf
+docker/** text eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.svg text
+*.woff binary
+*.woff2 binary

@@ -1,0 +1,45 @@
+<?php
+
+namespace {{ namespace }};
+
+use Eloquent;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+
+/**
+ * {{ namespace }}\{{ class }}
+ *
+ * @mixin Eloquent
+ */
+class {{ class }} extends Model
+{
+    use HasFactory;
+
+    // Fields & Traits
+    protected $fillable = [];
+
+    protected $casts = [];
+
+    // Relationships
+
+    // Scopes
+    public function scopeFilters(Builder|self $query): Builder|self
+    {
+        return $query;
+    }
+
+    public function scopeSorting(Builder|self $query): Builder|self
+    {
+        return $query;
+    }
+
+    public function scopeSearching(Builder|self $query): Builder|self
+    {
+        return $query;
+    }
+
+    // Attributes
+
+    // Helpers
+}

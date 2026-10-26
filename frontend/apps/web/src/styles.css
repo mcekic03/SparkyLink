@@ -1,0 +1,154 @@
+@import '@app/ui/globals.css';
+@source "../../../packages/ui/src";
+
+/*
+ * Boje firme Cekić Elektrik, uzete sa logoa: žuta #FDBA12 i tamnoplava #131430.
+ * Žuta je glavna boja (dugmad, oznake, izabrane i aktivne stavke), tamnoplava je
+ * boja teksta, a sive su blago povučene ka njoj da se sve slaže. Tema iz @app/ui
+ * ostaje netaknuta; ovde se samo prepisuju njene promenljive.
+ *
+ * Oba bloka navode iste promenljive: `:root` je ovde posle `.dark` iz @app/ui,
+ * pa bi svaka promenljiva koju `.dark` ispod ne navede u tamnoj temi ostala svetla.
+ */
+@theme inline {
+  --color-brand-deep: var(--brand-deep);
+}
+
+:root {
+  --brand-yellow: oklch(0.829 0.168 81.9);
+  --brand-navy: oklch(0.208 0.054 279);
+  /* Puna žuta na beloj se slabo vidi (1,7:1), pa tanke oznake i fokus idu u tamniju nijansu iste boje (3,5:1). */
+  --brand-deep: oklch(0.64 0.145 66);
+
+  --background: oklch(0.975 0.004 279);
+  --foreground: var(--brand-navy);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--brand-navy);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--brand-navy);
+  --primary: var(--brand-yellow);
+  --primary-foreground: var(--brand-navy);
+  --secondary: oklch(0.95 0.008 279);
+  --secondary-foreground: oklch(0.28 0.05 279);
+  --muted: oklch(0.955 0.006 279);
+  --muted-foreground: oklch(0.48 0.025 279);
+  --accent: oklch(0.965 0.045 85);
+  --accent-foreground: var(--brand-navy);
+  --border: oklch(0.9 0.008 279);
+  --input: oklch(0.87 0.01 279);
+  --ring: var(--brand-deep);
+  --chart-1: oklch(0.64 0.145 66);
+  --chart-2: var(--brand-yellow);
+  --sidebar: oklch(0.985 0.003 279);
+  --sidebar-foreground: oklch(0.3 0.045 279);
+  --sidebar-primary: var(--brand-yellow);
+  --sidebar-primary-foreground: var(--brand-navy);
+  --sidebar-accent: oklch(0.955 0.06 85);
+  --sidebar-accent-foreground: var(--brand-navy);
+  --sidebar-border: oklch(0.9 0.008 279);
+  --sidebar-ring: var(--brand-deep);
+}
+
+.dark {
+  /* Na tamnoj podlozi žuta se odlično vidi, pa i tanke oznake ostaju žute. */
+  --brand-deep: var(--brand-yellow);
+
+  --background: oklch(0.175 0.038 279);
+  --foreground: oklch(0.95 0.006 279);
+  --card: oklch(0.215 0.045 279);
+  --card-foreground: oklch(0.95 0.006 279);
+  --popover: oklch(0.235 0.045 279);
+  --popover-foreground: oklch(0.95 0.006 279);
+  --primary: var(--brand-yellow);
+  --primary-foreground: var(--brand-navy);
+  --secondary: oklch(0.27 0.04 279);
+  --secondary-foreground: oklch(0.93 0.008 279);
+  --muted: oklch(0.255 0.035 279);
+  --muted-foreground: oklch(0.72 0.025 279);
+  --accent: oklch(0.29 0.045 279);
+  --accent-foreground: oklch(0.95 0.04 88);
+  --border: oklch(0.32 0.04 279);
+  --input: oklch(0.36 0.04 279);
+  --ring: var(--brand-deep);
+  --chart-1: oklch(0.665 0.15 70);
+  --chart-2: var(--brand-yellow);
+  --sidebar: oklch(0.195 0.042 279);
+  --sidebar-foreground: oklch(0.9 0.01 279);
+  --sidebar-primary: var(--brand-yellow);
+  --sidebar-primary-foreground: var(--brand-navy);
+  --sidebar-accent: oklch(0.28 0.05 279);
+  --sidebar-accent-foreground: oklch(0.88 0.12 85);
+  --sidebar-border: oklch(0.29 0.04 279);
+  --sidebar-ring: var(--brand-deep);
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/*
+ * Menu, select and command rows are click targets, so they get the cursor that
+ * says so. shadcn ships them with `cursor-default`, on the reasoning that a
+ * native desktop menu uses an arrow — but nothing else in this app follows that
+ * convention, and a row that highlights under the pointer and does not change
+ * it reads as decoration.
+ *
+ * Unlayered on purpose: `cursor-default` is a utility, and anything inside
+ * `@layer base` loses to it however specific it is.
+ */
+[data-slot='dropdown-menu-item']:not([data-disabled]),
+[data-slot='dropdown-menu-radio-item']:not([data-disabled]),
+[data-slot='dropdown-menu-checkbox-item']:not([data-disabled]),
+[data-slot='dropdown-menu-sub-trigger']:not([data-disabled]),
+[data-slot='select-item']:not([data-disabled]),
+[data-slot='command-item']:not([data-disabled]) {
+  cursor: pointer;
+}
+
+/*
+ * Kvačicu izabrane stavke padajuće liste @app/ui boji glavnom bojom; puna žuta
+ * se na beloj podlozi slabo vidi, pa ide tamnija nijansa iste boje.
+ */
+[data-slot='select-item'] > span:first-child {
+  color: var(--brand-deep);
+}
+
+/*
+ * Theme switching, cross-faded — see lib/view-transition.ts for why it is done
+ * this way and not with a colour transition on every element.
+ *
+ * The default cross-fade is 250ms, which is long enough to notice as a delay on
+ * a control you expect to respond instantly.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+  animation-timing-function: ease;
+}
+
+/*
+ * Switch the animation off rather than the update: someone who asked for less
+ * motion still wants the theme they clicked, just without the fade.
+ */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

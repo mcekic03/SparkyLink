@@ -1,0 +1,759 @@
+{
+  "common": {
+    "cancel": "Otkaži",
+    "areYouSure": "Da li ste sigurni?",
+    "goHome": "Početna",
+    "goToDashboard": "Pregled",
+    "loading": "Učitavanje...",
+    "retry": "Pokušaj ponovo",
+    "save": "Sačuvaj",
+    "saving": "Čuvanje...",
+    "search": "Pretraga",
+    "signOut": "Odjavi se",
+    "edit": "Izmeni",
+    "next": "Dalje",
+    "back": "Nazad",
+    "yes": "Da",
+    "no": "Ne",
+    "add": "Dodaj",
+    "delete": "Obriši",
+    "close": "Zatvori",
+    "open": "Otvori",
+    "print": "Štampaj",
+    "total": "Ukupno",
+    "date": "Datum",
+    "note": "Napomena",
+    "optional": "nije obavezno",
+    "none": "—",
+    "loadFailed": "Učitavanje nije uspelo.",
+    "saveFailed": "Čuvanje nije uspelo.",
+    "deleteFailed": "Brisanje nije uspelo."
+  },
+  "currency": {
+    "1": "Dinar (RSD)",
+    "2": "Evro (EUR)"
+  },
+  "language": {
+    "label": "Jezik",
+    "en": "English",
+    "sr": "Srpski"
+  },
+  "nav": {
+    "groups": {
+      "general": "Poslovanje",
+      "administration": "Administracija"
+    },
+    "dashboard": "Pregled",
+    "sites": "Gradilišta",
+    "receipts": "Računi i garancije",
+    "priceList": "Cenovnik",
+    "settings": "Podešavanja",
+    "users": "Korisnici",
+    "workspace": "Cekić Elektrik",
+    "commandPalette": {
+      "title": "Komandna paleta",
+      "description": "Pronađite stranicu i otvorite je.",
+      "placeholder": "Unesite za pretragu...",
+      "empty": "Nema rezultata."
+    }
+  },
+  "unsavedChanges": {
+    "title": "Nesačuvane izmene",
+    "description": "Napuštanjem ove stranice izmene će biti odbačene.",
+    "stay": "Ostani na stranici",
+    "leave": "Odbaci izmene"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Prijava",
+      "description": "Prijavite se da biste vodili gradilišta.",
+      "secureTitle": "SparkyLink",
+      "secureDescription": "Gradilišta, troškovi i naplata na jednom mestu.",
+      "action": "Prijavi se",
+      "pending": "Prijavljivanje...",
+      "email": "Email",
+      "password": "Lozinka",
+      "emailPlaceholder": "primer@primer.com",
+      "failed": "Prijava nije uspela. Pokušajte ponovo.",
+      "submitFailed": "Slanje forme za prijavu nije uspelo",
+      "navigationFailed": "Prijava je uspela, ali navigacija nije. Osvežite stranicu."
+    }
+  },
+  "dashboard": {
+    "title": "Pregled",
+    "description": "Naplata, troškovi i zarada za izabrani period.",
+    "loadFailed": "Učitavanje pregleda nije uspelo",
+    "from": "Od",
+    "to": "Do",
+    "thisYear": "Ova godina",
+    "thisMonth": "Ovaj mesec",
+    "lastYear": "Prošla godina",
+    "rateToday": "Kurs danas: 1 € = {{rate}} din",
+    "kpi": {
+      "billed": "Naplaćeno",
+      "costs": "Troškovi",
+      "profit": "Zarada",
+      "paid": "Uplaćeno",
+      "receivables": "Potraživanja",
+      "receivablesHint": "Ukupan dug investitora na {{count}} gradilišta"
+    },
+    "sites": {
+      "offer": "Ponude",
+      "open": "Otvorena",
+      "closed": "Zatvorena"
+    },
+    "monthly": {
+      "title": "Zarada po mesecima",
+      "description": "Poslednjih 12 meseci, u evrima.",
+      "billed": "Naplaćeno",
+      "costs": "Troškovi",
+      "profit": "Zarada"
+    },
+    "debtors": {
+      "title": "Ko duguje",
+      "empty": "Niko ne duguje."
+    },
+    "topSites": {
+      "title": "Najisplativija gradilišta",
+      "empty": "Nema podataka za period."
+    }
+  },
+  "sites": {
+    "title": "Gradilišta",
+    "description": "Sva gradilišta, ponude i istorija radova.",
+    "loadFailed": "Učitavanje gradilišta nije uspelo",
+    "empty": "Nema gradilišta.",
+    "searchPlaceholder": "Naziv, adresa, investitor, telefon",
+    "columns": {
+      "name": "Gradilište",
+      "investor": "Investitor",
+      "status": "Status",
+      "paymentStatus": "Naplata",
+      "balance": "Duguje",
+      "profit": "Zarada",
+      "started": "Početak"
+    },
+    "status": {
+      "1": "Ponuda – čeka odgovor",
+      "2": "Otvoreno",
+      "3": "Zatvoreno"
+    },
+    "paymentStatus": {
+      "1": "Nije plaćeno",
+      "2": "Delimično plaćeno",
+      "3": "Plaćeno u celosti"
+    },
+    "filters": {
+      "status": "Status radova",
+      "paymentStatus": "Status naplate",
+      "trashed": "Obrisana"
+    },
+    "create": {
+      "action": "Novo gradilište",
+      "title": "Novo gradilište",
+      "description": "Lokacija, investitor i valuta obračuna.",
+      "submit": "Sačuvaj gradilište",
+      "failed": "Čuvanje gradilišta nije uspelo."
+    },
+    "edit": {
+      "title": "Izmena gradilišta",
+      "failed": "Izmena gradilišta nije uspela."
+    },
+    "form": {
+      "sectionSite": "Gradilište",
+      "sectionInvestor": "Investitor",
+      "sectionMoney": "Obračun",
+      "name": "Naziv",
+      "namePlaceholder": "npr. Kuća Petrović, Čukarica",
+      "status": "Status",
+      "address": "Adresa",
+      "city": "Mesto",
+      "description": "Opis",
+      "investorName": "Ime i prezime / firma",
+      "investorPhone": "Telefon",
+      "investorEmail": "Email",
+      "investorAddress": "Adresa investitora",
+      "currency": "Valuta obračuna",
+      "currencyHint": "U ovoj valuti se računa dug investitora; druga valuta se prikazuje po kursu.",
+      "markup": "Marža na materijal (%)",
+      "markupHint": "Prazno = podrazumevana iz podešavanja ({{value}} %).",
+      "startedAt": "Početak radova",
+      "completedAt": "Završetak radova",
+      "errors": {
+        "name": "Unesite naziv gradilišta.",
+        "email": "Unesite ispravan email.",
+        "markup": "Unesite procenat (npr. 20)."
+      }
+    },
+    "delete": {
+      "action": "Obriši gradilište",
+      "confirm": "Obrisati gradilište? Može da se vrati iz obrisanih.",
+      "failed": "Brisanje gradilišta nije uspelo."
+    },
+    "restore": {
+      "action": "Vrati gradilište",
+      "failed": "Vraćanje nije uspelo."
+    },
+    "detail": {
+      "loadFailed": "Učitavanje gradilišta nije uspelo",
+      "deleted": "Ovo gradilište je obrisano.",
+      "call": "Pozovi",
+      "started": "Početak: {{date}}",
+      "completed": "Završetak: {{date}}",
+      "tabs": {
+        "overview": "Pregled",
+        "items": "Stavke",
+        "labor": "Radnici",
+        "payments": "Uplate",
+        "documents": "Ponude i računi",
+        "receipts": "Fiskalni računi",
+        "media": "Slike i video",
+        "notes": "Napomene"
+      }
+    }
+  },
+  "summary": {
+    "loadFailed": "Učitavanje finansija nije uspelo",
+    "billed": "Za naplatu",
+    "costs": "Troškovi",
+    "profit": "Zarada",
+    "paid": "Uplaćeno",
+    "balance": "Preostalo za uplatu",
+    "overpaid": "Preplaćeno",
+    "materials": "Materijal",
+    "services": "Usluge (rad)",
+    "other": "Ostali troškovi",
+    "labor": "Radnici",
+    "purchase": "Nabavno",
+    "sale": "Prodajno",
+    "margin": "Zarada na materijalu",
+    "personHours": "{{hours}} radnih sati",
+    "rateToday": "Druga valuta po današnjem kursu: 1 € = {{rate}} din",
+    "noRate": "Današnji kurs nije dostupan."
+  },
+  "items": {
+    "title": "Stavke",
+    "add": "Nova stavka",
+    "empty": "Još nema stavki. Dodajte materijal ili uslugu, skenirajte fiskalni račun ili uvezite Excel prodavnice.",
+    "loadFailed": "Učitavanje stavki nije uspelo",
+    "noPurchasePrice": "nabavna nije upisana",
+    "select": {
+      "quick": "Brzo biranje:",
+      "missing": "Sve bez nabavne cene ({{count}})",
+      "count": "Izabrano: {{count}}",
+      "sale": "Za investitora",
+      "purchase": "Nabavno sada",
+      "clear": "Poništi izbor",
+      "setPurchase": "Upiši nabavnu za izabrane",
+      "one": "Izaberi: {{name}}"
+    },
+    "purchase": {
+      "title": "Nabavna cena za izabrane stavke",
+      "description": "Izabrano stavki: {{count}}. Cene za investitora se ne menjaju.",
+      "sale": "Za investitora ukupno",
+      "current": "Nabavno sada",
+      "mode": "Kako da izračunam nabavnu cenu",
+      "byPercent": "Manje za procenat",
+      "byTotal": "Ukupno sam platio",
+      "percent": "Za koliko procenata manje",
+      "percentPreview": "Nabavno ukupno ≈ {{total}}",
+      "percentInvalid": "Upišite procenat od 0 do 100 (npr. 10 ili 12,5).",
+      "total": "Koliko sam platio",
+      "totalPreview": "To je {{percent}} % manje od cene za investitora.",
+      "totalPreviewHigher": "To je {{percent}} % više od cene za investitora.",
+      "totalInvalid": "Upišite iznos (npr. 900 ili 99.954,50).",
+      "currency": "Valuta",
+      "note": "Nabavna cena svake izabrane stavke računa se srazmerno njenoj ceni za investitora, pa je zbir tačno koliko ste platili. Investitor i dalje plaća iste cene.",
+      "submit": "Upiši nabavne cene",
+      "failed": "Upis nabavnih cena nije uspeo."
+    },
+    "totals": {
+      "spent": {
+        "1": "Potrošeno na materijal",
+        "3": "Potrošeno na ostalo",
+        "all": "Potrošeno na materijal i ostalo"
+      },
+      "owed": {
+        "1": "Investitor duguje za materijal",
+        "2": "Investitor duguje za usluge",
+        "3": "Investitor duguje za ostalo",
+        "all": "Investitor duguje za sve stavke"
+      },
+      "loadFailed": "Učitavanje zbirova nije uspelo"
+    },
+    "import": {
+      "button": "Uvezi Excel",
+      "title": "Uvoz materijala iz Excel-a",
+      "description": "Cene iz fajla su cene za investitora. Dok ne upišete pravu nabavnu cenu, računa se ista kao ta cena, pa materijal ne pravi zaradu.",
+      "pick": "Izaberi fajlove",
+      "pickHint": "Excel fajlovi prodavnice (.xls ili .xlsx), može i više odjednom. Čita se samo prvi list.",
+      "dropHint": "ili ih prevucite ovde",
+      "reading": "Čitam fajlove...",
+      "addFiles": "Dodaj još fajlova",
+      "date": "Datum stavki",
+      "selectAll": "Sve",
+      "select": "Uvezi ovu stavku",
+      "price": "Cena za investitora",
+      "fileItems": "stavki: {{count}}",
+      "selected": "Izabrano: {{count}} · ukupno {{total}}",
+      "submit": "Dodaj stavke ({{count}})",
+      "importing": "Dodajem...",
+      "invalid": "Proverite naziv i cenu u označenim redovima.",
+      "empty": "U izabranim fajlovima nema stavki.",
+      "readFailed": "Čitanje fajlova nije uspelo.",
+      "saveFailed": "Dodavanje stavki nije uspelo."
+    },
+    "all": "Sve",
+    "filters": {
+      "search": "Pretraga po nazivu",
+      "source": "Izvor stavke",
+      "sources": {
+        "all": "Svi izvori",
+        "manual": "Ručni unos",
+        "import": "Excel uvoz",
+        "receipt": "Fiskalni račun (QR)"
+      },
+      "clear": "Poništi pretragu i filter",
+      "none": "Nijedna stavka ne odgovara pretrazi ili filteru."
+    },
+    "type": {
+      "1": "Materijal",
+      "2": "Usluga",
+      "3": "Ostalo"
+    },
+    "columns": {
+      "name": "Naziv",
+      "quantity": "Količina",
+      "purchase": "Nabavno",
+      "sale": "Za investitora",
+      "date": "Datum"
+    },
+    "notBilled": "ne naplaćuje se",
+    "fromReceipt": "sa računa",
+    "fromImport": "iz Excel-a",
+    "edit": "Izmena stavke",
+    "create": "Nova stavka",
+    "form": {
+      "type": "Vrsta",
+      "currency": "Valuta cena",
+      "name": "Naziv",
+      "namePlaceholder": "npr. Kabl PP-Y 3x2,5 ili Ugradnja utičnice",
+      "unit": "Jedinica mere",
+      "quantity": "Količina",
+      "purchasePrice": "Nabavna cena po jedinici",
+      "purchasePriceHint": "Koliko ste vi platili.",
+      "purchaseEstimatedHint": "Nije upisana – dok je ne upišete, računa se kao cena za investitora (bez zarade).",
+      "salePrice": "Cena za investitora po jedinici",
+      "salePriceHint": "Predlog: nabavna + {{markup}} % marže.",
+      "applyMarkup": "Primeni maržu",
+      "date": "Datum",
+      "rate": "Kurs (1 € = din)",
+      "rateHint": "Srednji kurs NBS na izabrani dan; može da se promeni.",
+      "rateMissing": "Kurs nije dostupan – upišite ga.",
+      "note": "Napomena",
+      "billable": "Ide investitoru na račun",
+      "lineTotal": "Ukupno: {{purchase}} nabavno · {{sale}} za investitora",
+      "suggestions": "Iz cenovnika i ranijih stavki",
+      "fromPriceList": "cenovnik",
+      "fromHistory": "ranije"
+    },
+    "errors": {
+      "name": "Unesite naziv.",
+      "quantity": "Unesite količinu veću od nule.",
+      "price": "Unesite cenu (npr. 120 ili 120,50).",
+      "date": "Izaberite datum.",
+      "rate": "Unesite kurs (npr. 117,25)."
+    },
+    "delete": {
+      "confirm": "Obrisati stavku?",
+      "failed": "Brisanje stavke nije uspelo."
+    },
+    "saveFailed": "Čuvanje stavke nije uspelo."
+  },
+  "labor": {
+    "title": "Radnici",
+    "add": "Upiši rad",
+    "empty": "Još nema upisanog rada.",
+    "loadFailed": "Učitavanje rada nije uspelo",
+    "columns": {
+      "date": "Datum",
+      "workers": "Radnika",
+      "hours": "Sati",
+      "rate": "Cena sata",
+      "total": "Trošak"
+    },
+    "create": "Upis rada",
+    "edit": "Izmena rada",
+    "form": {
+      "date": "Datum",
+      "workers": "Broj radnika",
+      "hours": "Sati po radniku",
+      "hourlyRate": "Cena sata",
+      "currency": "Valuta",
+      "rate": "Kurs (1 € = din)",
+      "description": "Opis (ko je radio, šta)",
+      "total": "Trošak dana: {{total}}"
+    },
+    "errors": {
+      "workers": "Unesite broj radnika.",
+      "hours": "Unesite sate (do 24).",
+      "hourlyRate": "Unesite cenu sata."
+    },
+    "delete": {
+      "confirm": "Obrisati upis rada?",
+      "failed": "Brisanje nije uspelo."
+    },
+    "saveFailed": "Čuvanje rada nije uspelo."
+  },
+  "payments": {
+    "title": "Uplate investitora",
+    "add": "Nova uplata",
+    "empty": "Još nema uplata.",
+    "loadFailed": "Učitavanje uplata nije uspelo",
+    "create": "Nova uplata",
+    "edit": "Izmena uplate",
+    "form": {
+      "date": "Datum uplate",
+      "amount": "Iznos",
+      "currency": "Valuta",
+      "rate": "Kurs (1 € = din)",
+      "note": "Napomena (npr. avans, gotovina)"
+    },
+    "errors": {
+      "amount": "Unesite iznos veći od nule."
+    },
+    "delete": {
+      "confirm": "Obrisati uplatu?",
+      "failed": "Brisanje uplate nije uspelo."
+    },
+    "saveFailed": "Čuvanje uplate nije uspelo."
+  },
+  "documents": {
+    "title": "Ponude i završni računi",
+    "description": "PDF za investitora. Sadrži samo stavke za naplatu – bez nabavnih cena i zarade.",
+    "createOffer": "Napravi ponudu",
+    "createInvoice": "Napravi završni račun",
+    "empty": "Još nema izdatih dokumenata.",
+    "loadFailed": "Učitavanje dokumenata nije uspelo",
+    "type": {
+      "1": "Ponuda",
+      "2": "Završni račun"
+    },
+    "columns": {
+      "number": "Broj",
+      "date": "Datum",
+      "total": "Ukupno",
+      "balance": "Duguje"
+    },
+    "form": {
+      "offerTitle": "Nova ponuda",
+      "invoiceTitle": "Novi završni račun",
+      "offerHint": "Ponuda sadrži krupnu napomenu da se materijal i količine mogu razlikovati od završnog računa.",
+      "invoiceHint": "Završni račun sadrži sve uplate i preostali dug.",
+      "issuedAt": "Datum dokumenta",
+      "note": "Napomena na dokumentu",
+      "itemized": "Materijal po stavkama",
+      "itemizedHint": "Isključeno: materijal kao jedan zbirni red.",
+      "submit": "Napravi PDF"
+    },
+    "openPdf": "Otvori PDF",
+    "createFailed": "Pravljenje dokumenta nije uspelo.",
+    "delete": {
+      "confirm": "Obrisati dokument?",
+      "failed": "Brisanje dokumenta nije uspelo."
+    }
+  },
+  "receipts": {
+    "title": "Računi i garancije",
+    "description": "Svi fiskalni računi sa gradilišta. Pronađite račun i odštampajte kopiju za garanciju.",
+    "siteTitle": "Fiskalni računi",
+    "loadFailed": "Učitavanje računa nije uspelo",
+    "empty": "Nema računa.",
+    "searchPlaceholder": "Prodavnica, PIB, broj računa, artikal",
+    "scan": "Skeniraj račun",
+    "status": {
+      "1": "Čeka preuzimanje",
+      "2": "Preuzet",
+      "3": "Greška",
+      "4": "Slika računa"
+    },
+    "columns": {
+      "store": "Prodavnica",
+      "date": "Datum",
+      "total": "Ukupno",
+      "site": "Gradilište",
+      "status": "Status",
+      "items": "Stavki"
+    },
+    "copy": "Kopija za garanciju",
+    "photo": "Slika računa",
+    "journal": "Tekst računa",
+    "refetch": "Preuzmi ponovo",
+    "importItems": "Uvezi stavke",
+    "fetchError": "Poslednja greška: {{error}}",
+    "delete": {
+      "confirm": "Obrisati račun i stavke uvezene sa njega?",
+      "failed": "Brisanje računa nije uspelo."
+    },
+    "scanner": {
+      "title": "Skeniranje fiskalnog računa",
+      "description": "Uperite kameru u QR kod sa računa ili ga slikajte.",
+      "camera": "Kamera",
+      "cameraHint": "Kamera uživo radi samo preko HTTPS-a (na produkciji). Lokalno slikajte račun.",
+      "takePhoto": "Slikaj račun",
+      "choosePhoto": "Izaberi sliku",
+      "pasteLink": "Ili nalepite link sa QR koda",
+      "pasteLinkPlaceholder": "https://suf.purs.gov.rs/v/?vl=...",
+      "fetch": "Preuzmi račun",
+      "fetching": "Preuzimanje računa...",
+      "decoding": "Tražim QR kod na slici...",
+      "noQr": "Na slici nije pronađen QR kod. Slikajte ga bliže i oštrije, ili sačuvajte samo sliku računa.",
+      "notReceipt": "QR kod nije sa fiskalnog računa.",
+      "cameraFailed": "Kamera nije dostupna.",
+      "saveOnlyPhoto": "Sačuvaj samo sliku računa",
+      "manualNote": "Napomena (npr. bojler – garancija 2 godine)",
+      "manualStore": "Prodavnica",
+      "manualDate": "Datum računa"
+    },
+    "preview": {
+      "title": "Stavke sa računa",
+      "store": "Prodavnica",
+      "date": "Datum",
+      "total": "Ukupno na računu",
+      "select": "Uvezi",
+      "selectAll": "Sve",
+      "markup": "Marža (%)",
+      "applyMarkup": "Primeni na sve",
+      "purchase": "Nabavna",
+      "sale": "Za investitora",
+      "import": "Sačuvaj račun i uvezi stavke",
+      "importing": "Čuvanje...",
+      "notFetched": "Sajt Poreske uprave trenutno ne odgovara. Račun može da se sačuva i stavke uvezu kasnije.",
+      "saveWaiting": "Sačuvaj račun za kasnije",
+      "selected": "Izabrano {{count}} stavki"
+    },
+    "saveFailed": "Čuvanje računa nije uspelo.",
+    "previewFailed": "Preuzimanje računa nije uspelo."
+  },
+  "media": {
+    "title": "Slike i video",
+    "description": "Npr. gde su prošli kablovi pre malterisanja.",
+    "upload": "Dodaj slike ili video",
+    "uploading": "Otpremanje {{current}} od {{total}}...",
+    "uploaded": "Otpremljeno fajlova: {{count}}",
+    "empty": "Još nema slika ni video snimaka.",
+    "loadFailed": "Učitavanje fajlova nije uspelo",
+    "caption": "Opis",
+    "captionPlaceholder": "npr. Razvod u kupatilu",
+    "tooLarge": "Fajl {{name}} je veći od {{max}} MB.",
+    "failed": "Otpremanje fajla {{name}} nije uspelo.",
+    "video": "Video",
+    "delete": {
+      "confirm": "Obrisati fajl?",
+      "failed": "Brisanje fajla nije uspelo."
+    }
+  },
+  "notes": {
+    "title": "Napomene",
+    "add": "Dodaj napomenu",
+    "placeholder": "Npr. investitor traži još 3 utičnice u dnevnoj sobi",
+    "empty": "Još nema napomena.",
+    "loadFailed": "Učitavanje napomena nije uspelo",
+    "saveFailed": "Čuvanje napomene nije uspelo.",
+    "delete": {
+      "confirm": "Obrisati napomenu?",
+      "failed": "Brisanje napomene nije uspelo."
+    }
+  },
+  "priceList": {
+    "title": "Cenovnik",
+    "description": "Usluge i materijal sa uobičajenim cenama – nude se pri unosu stavki.",
+    "add": "Nova stavka cenovnika",
+    "empty": "Cenovnik je prazan.",
+    "loadFailed": "Učitavanje cenovnika nije uspelo",
+    "searchPlaceholder": "Naziv",
+    "columns": {
+      "name": "Naziv",
+      "type": "Vrsta",
+      "unit": "J.m.",
+      "purchase": "Nabavna",
+      "sale": "Za investitora",
+      "active": "Aktivna"
+    },
+    "create": "Nova stavka cenovnika",
+    "edit": "Izmena stavke cenovnika",
+    "form": {
+      "active": "Nudi se pri unosu"
+    },
+    "saveFailed": "Čuvanje nije uspelo.",
+    "delete": {
+      "confirm": "Obrisati stavku cenovnika?",
+      "failed": "Brisanje nije uspelo."
+    }
+  },
+  "settings": {
+    "title": "Podešavanja",
+    "description": "Podaci firme za ponude i račune, podrazumevane vrednosti i kurs.",
+    "loadFailed": "Učitavanje podešavanja nije uspelo",
+    "saveFailed": "Čuvanje podešavanja nije uspelo.",
+    "company": {
+      "title": "Podaci firme",
+      "name": "Naziv firme",
+      "address": "Adresa",
+      "city": "Mesto",
+      "phone": "Telefon",
+      "email": "Email",
+      "pib": "PIB",
+      "mb": "Matični broj",
+      "bankAccount": "Tekući račun",
+      "website": "Veb-sajt"
+    },
+    "defaults": {
+      "title": "Podrazumevane vrednosti",
+      "currency": "Valuta obračuna za nova gradilišta",
+      "markup": "Marža na materijal (%)"
+    },
+    "notes": {
+      "title": "Napomene na PDF-u",
+      "offer": "Napomena na ponudi (krupno)",
+      "offerHint": "Ograda da se materijal i količine mogu razlikovati od završnog računa.",
+      "invoice": "Napomena na završnom računu"
+    },
+    "logo": {
+      "title": "Logo firme",
+      "description": "Ide na ponude, račune i u aplikaciju. PNG ili JPG, do 5 MB.",
+      "upload": "Promeni logo",
+      "failed": "Čuvanje loga nije uspelo."
+    },
+    "rates": {
+      "title": "Kurs evra",
+      "description": "Srednji kurs NBS se preuzima sam svakog jutra. Ovde možete upisati kurs ručno.",
+      "date": "Dan",
+      "rate": "1 € = din",
+      "source": {
+        "1": "NBS",
+        "2": "Ručno"
+      },
+      "save": "Sačuvaj kurs",
+      "failed": "Čuvanje kursa nije uspelo.",
+      "empty": "Još nema preuzetih kurseva."
+    }
+  },
+  "users": {
+    "title": "Korisnici",
+    "description": "Nalozi sa pristupom aplikaciji. Radnik vidi gradilišta, slike, napomene i račune, ali ne i novac.",
+    "loadFailed": "Učitavanje korisnika nije uspelo",
+    "empty": "Nema pronađenih korisnika.",
+    "columns": {
+      "name": "Ime",
+      "email": "Email",
+      "role": "Uloga",
+      "createdAt": "Kreiran"
+    },
+    "roles": {
+      "1": "Super administrator",
+      "2": "Administrator",
+      "3": "Radnik"
+    },
+    "edit": {
+      "title": "Izmena korisnika",
+      "description": "Ažurirajte podatke za {{name}}.",
+      "loadFailed": "Učitavanje korisnika nije uspelo",
+      "updateFailed": "Ažuriranje korisnika nije uspelo.",
+      "invalidRole": "Izaberite važeću ulogu.",
+      "namePlaceholder": "Ime i prezime",
+      "passwordHint": "Ostavite prazno da zadržite trenutnu",
+      "confirmPassword": "Potvrdite lozinku",
+      "repeatPassword": "Ponovite novu lozinku",
+      "selectRole": "Izaberite ulogu"
+    },
+    "create": {
+      "action": "Novi korisnik",
+      "title": "Novi korisnik",
+      "description": "Administrator vidi sve osim korisnika i podešavanja; radnik ne vidi iznose ni zaradu.",
+      "submit": "Kreiraj nalog",
+      "passwordHint": "Najmanje 8 znakova, velika i mala slova i simbol.",
+      "failed": "Kreiranje naloga nije uspelo.",
+      "errors": {
+        "name": "Unesite ime.",
+        "email": "Unesite ispravan mejl.",
+        "password": "Lozinka mora imati najmanje 8 znakova.",
+        "passwordMatch": "Lozinke se ne poklapaju."
+      }
+    },
+    "allRoles": "Sve uloge",
+    "searchPlaceholder": "Pretraga",
+    "delete": {
+      "action": "Obriši korisnika",
+      "pending": "Brisanje...",
+      "failed": "Brisanje korisnika nije uspelo.",
+      "confirm": "Obrisati korisnika {{name}}? Ova radnja se ne može poništiti.",
+      "selected": "Obriši izabrane",
+      "confirmSelected": "Obrisati izabrane korisnike? Ova radnja se ne može poništiti.",
+      "selectedSuccess": "Izabrani korisnici su obrisani.",
+      "selectedFailed": "Brisanje izabranih korisnika nije uspelo."
+    }
+  },
+  "table": {
+    "selectionCount": "Izabrano {{selected}} od {{total}}",
+    "pageRange": "{{from}}–{{to}} od {{total}}",
+    "paginationTop": "Paginacija, iznad tabele",
+    "paginationBottom": "Paginacija, ispod tabele",
+    "goToPage": "Idi na stranu {{page}}",
+    "firstPage": "Prva strana",
+    "lastPage": "Poslednja strana",
+    "previous": "Prethodna strana",
+    "next": "Sledeća strana",
+    "columns": "Kolone",
+    "filters": "Filteri",
+    "filterDescription": "Filtriranje podataka u tabeli",
+    "filterBuilder": {
+      "addFilter": "Filter",
+      "all": "Bilo koje",
+      "pickDate": "Izaberite datum"
+    },
+    "clearFilters": "Obriši filtere",
+    "clearSelection": "Poništi izbor",
+    "bulkActions": "Grupne akcije",
+    "export": {
+      "csv": "Izvezi CSV",
+      "excel": "Izvezi Excel",
+      "pdf": "Izvezi PDF"
+    },
+    "selectAll": "Izaberi sve",
+    "selectRow": "Izaberi red",
+    "actions": "Akcije",
+    "toggleColumns": "Prikaz kolona",
+    "empty": {
+      "title": "Još uvek nema ničega",
+      "description": "Nema ničega za prikaz.",
+      "filtered": "Nijedan red ne odgovara trenutnim filterima."
+    }
+  },
+  "errors": {
+    "generic": {
+      "title": "Došlo je do greške",
+      "description": "Dogodila se neočekivana greška."
+    },
+    "notFound": {
+      "title": "Stranica nije pronađena",
+      "description": "Ta stranica ne postoji ili je premeštena."
+    },
+    "forbidden": {
+      "title": "Nemate pristup",
+      "description": "Vaš nalog nema dozvolu za pristup toj stranici. Ako mislite da bi trebalo, obratite se administratoru."
+    },
+    "api": {
+      "network": "Server nije dostupan. Proverite konekciju.",
+      "unauthenticated": "Sesija je istekla. Prijavite se ponovo.",
+      "forbidden": "Nemate dozvolu za tu radnju.",
+      "notFound": "Stavka nije pronađena.",
+      "validation": "Proverite označena polja.",
+      "server": "Došlo je do greške na serveru. Pokušajte ponovo.",
+      "unknown": "Došlo je do greške. Pokušajte ponovo."
+    }
+  },
+  "theme": {
+    "toggle": "Promeni temu"
+  }
+}

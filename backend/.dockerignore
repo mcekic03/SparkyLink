@@ -1,0 +1,39 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Env fajlovi nikad ne ulaze u image - konfiguracija stize iz stack-a
+.env
+.env.*
+
+# Zavisnosti se instaliraju u build fazi
+vendor
+node_modules
+
+# Runtime fajlovi
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+storage/clockwork
+storage/app/public/*
+storage/app/private/*
+bootstrap/cache/*
+public/storage
+public/hot
+
+# Testovi, dokumentacija, IDE
+tests
+.phpunit.cache
+.phpunit.result.cache
+docs
+*.md
+.idea
+.vscode
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+Dockerfile
+.dockerignore

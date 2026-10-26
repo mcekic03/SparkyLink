@@ -1,0 +1,16 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Classes\LocalizedFormRequest;
+use App\Classes\Utilities\Ruly;
+
+class {{ class }} extends LocalizedFormRequest
+{
+    public function rules() : array
+    {
+        return [
+            //
+        ];
+    }
+}

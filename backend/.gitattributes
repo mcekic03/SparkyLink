@@ -1,0 +1,18 @@
+* text=auto eol=lf
+
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Skripte koje se izvrsavaju u kontejneru moraju imati LF
+*.sh text eol=lf
+Dockerfile text eol=lf
+docker/** text eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

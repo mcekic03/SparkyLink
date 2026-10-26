@@ -1,0 +1,252 @@
+# SparkyLink - ceo stek (Portainer + Traefik), po uzoru na Staru Vodenicu.
+#
+# Deploy: Portainer -> Stacks -> Add stack -> Repository, compose path
+# `docker-compose.yml`, vrednosti kroz "Environment variables" (spisak sa
+# objasnjenjima je u `.env.example`, uputstvo u DEPLOYMENT.md).
+#
+# Saobracaj: Traefik (deljena mreza `proxy`) -> sparky-web (nginx: React build i
+# prosledjivanje /api backendu) -> sparky-api (Laravel). Nema objavljenih portova,
+# baza je samo na internoj mrezi. Lokalno Compose sam ucitava i
+# docker-compose.override.yml (sopstveni Traefik, portovi, alati za razvoj).
+#
+# Imena servisa imaju prefiks `sparky-`: sparky-web je i na deljenoj mrezi `proxy`,
+# gde vec postoje tudji kontejneri po imenima `api`, `web`, `mysql`.
+
+name: sparkylink
+
+networks:
+  # Zajednicka mreza sa Traefik-om; pravi se van stack-a: docker network create proxy
+  proxy:
+    external: true
+    name: ${TRAEFIK_NETWORK:-proxy}
+  internal:
+    driver: bridge
+
+volumes:
+  mysql:
+  api_storage:
+  backups:
+
+# Isti image za API, red cekanja i zakazane zadatke (serversideup/php: nginx +
+# php-fpm, health ruta /up, AUTORUN_* pokrece migracije i kesira konfiguraciju).
+x-api-build: &api-build
+  context: ./backend
+  dockerfile: Dockerfile
+  target: prod
+
+x-api-env: &api-env
+  APP_NAME: SparkyLink
+  APP_ENV: "${APP_ENV:-production}"
+  APP_KEY: "${APP_KEY:?APP_KEY mora biti postavljen (vidi .env.example)}"
+  APP_DEBUG: "${APP_DEBUG:-false}"
+  APP_URL: "https://${APP_DOMAIN:?APP_DOMAIN mora biti postavljen, npr. sparkylink.cekic-elektrik.rs}"
+  APP_LOCALE: sr
+  APP_FALLBACK_LOCALE: en
+  APP_TIMEZONE: UTC
+  SCHEDULE_TIMEZONE: Europe/Belgrade
+
+  # Logovi na stdout/stderr kontejnera, da ih Portainer vidi.
+  LOG_CHANNEL: "${LOG_CHANNEL:-stderr}"
+  LOG_LEVEL: "${LOG_LEVEL:-warning}"
+
+  DB_CONNECTION: mysql
+  DB_HOST: sparky-mysql
+  DB_PORT: 3306
+  DB_DATABASE: "${DB_DATABASE:-sparkylink}"
+  DB_USERNAME: "${DB_USERNAME:-sparkylink}"
+  DB_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD mora biti postavljen}"
+
+  # Sve ide preko baze - nema Redis-a u ovom stack-u.
+  CACHE_STORE: database
+  QUEUE_CONNECTION: database
+  SESSION_DRIVER: database
+
+  # Prvi nalog (super administrator) pri prvom startu; lozinka se menja u profilu.
+  ADMIN_EMAIL: "${ADMIN_EMAIL:-admin@sparkylink.rs}"
+  SECRET_PASSWORD: "${SECRET_PASSWORD:?SECRET_PASSWORD mora biti postavljen (lozinka prvog naloga)}"
+
+  # PDF (ponude, zavrsni racuni, kopije fiskalnih racuna) pravi Gotenberg iz ovog stack-a.
+  GOTENBERG_URL: http://sparky-gotenberg:3000
+
+  # Otpremanje slika i video snimaka sa telefona.
+  NGINX_CLIENT_MAX_BODY_SIZE: "${UPLOAD_MAX_SIZE:-600M}"
+  PHP_UPLOAD_MAX_FILE_SIZE: "${UPLOAD_MAX_SIZE:-600M}"
+  PHP_POST_MAX_SIZE: "${UPLOAD_MAX_SIZE:-600M}"
+  PHP_MAX_EXECUTION_TIME: "300"
+  PHP_MEMORY_LIMIT: "${PHP_MEMORY_LIMIT:-256M}"
+  PHP_OPCACHE_ENABLE: "${PHP_OPCACHE_ENABLE:-1}"
+  SSL_MODE: "off"
+
+services:
+  # nginx: servira React build i prosledjuje /api i /up backendu. Jedini servis
+  # koji Traefik vidi.
+  sparky-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: sparkylink-web:latest
+    container_name: sparkylink_web
+    restart: unless-stopped
+    expose:
+      - "80"
+    depends_on:
+      sparky-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      - traefik.enable=true
+      # Kontejner je na dve mreze - bez ovoga Traefik ume da uzme adresu sa pogresne.
+      - traefik.docker.network=${TRAEFIK_NETWORK:-proxy}
+      - traefik.http.routers.sparkylink.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.sparkylink.entrypoints=${TRAEFIK_ENTRYPOINT_SECURE:-websecure}
+      - traefik.http.routers.sparkylink.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.sparkylink.loadbalancer.server.port=80
+      - traefik.http.routers.sparkylink-insecure.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.sparkylink-insecure.entrypoints=${TRAEFIK_ENTRYPOINT_WEB:-web}
+      - traefik.http.routers.sparkylink-insecure.middlewares=redirect-to-https@file
+    networks:
+      - proxy
+      - internal
+
+  sparky-api:
+    build: *api-build
+    image: sparkylink-api:latest
+    container_name: sparkylink_api
+    restart: unless-stopped
+    expose:
+      - "8080"
+    environment:
+      <<: *api-env
+      # Pri startu: sacekaj bazu, pokreni migracije (uloge, podesavanja i prvi nalog
+      # se upisuju kroz migracije - nema seed-a), kesiraj konfiguraciju. Samo ovaj
+      # kontejner radi migracije, pa izolacija (cache lock) nije potrebna.
+      AUTORUN_ENABLED: "true"
+      AUTORUN_LARAVEL_MIGRATION: "true"
+      AUTORUN_LARAVEL_MIGRATION_ISOLATION: "false"
+      AUTORUN_LARAVEL_MIGRATION_TIMEOUT: "${DB_WAIT_TIMEOUT:-60}"
+      AUTORUN_LARAVEL_STORAGE_LINK: "false"
+      AUTORUN_LARAVEL_CONFIG_CACHE: "true"
+      AUTORUN_LARAVEL_ROUTE_CACHE: "true"
+      AUTORUN_LARAVEL_VIEW_CACHE: "true"
+      AUTORUN_LARAVEL_EVENT_CACHE: "true"
+    volumes:
+      - api_storage:/var/www/html/storage
+    depends_on:
+      sparky-mysql:
+        condition: service_healthy
+      sparky-gotenberg:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://localhost:8080/up"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    networks:
+      - internal
+
+  # Red cekanja (ponovno preuzimanje fiskalnih racuna i sl.).
+  sparky-queue:
+    build: *api-build
+    image: sparkylink-api:latest
+    container_name: sparkylink_queue
+    restart: unless-stopped
+    command: ["php", "/var/www/html/artisan", "queue:work", "--tries=3", "--sleep=3", "--max-time=3600"]
+    stop_signal: SIGTERM
+    environment:
+      <<: *api-env
+      AUTORUN_ENABLED: "false"
+    volumes:
+      - api_storage:/var/www/html/storage
+    depends_on:
+      sparky-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "healthcheck-queue"]
+      start_period: 10s
+    networks:
+      - internal
+
+  # Zakazani zadaci: kurs NBS svakog jutra, ponovni pokusaj za fiskalne racune.
+  sparky-schedule:
+    build: *api-build
+    image: sparkylink-api:latest
+    container_name: sparkylink_schedule
+    restart: unless-stopped
+    command: ["php", "/var/www/html/artisan", "schedule:work"]
+    stop_signal: SIGTERM
+    environment:
+      <<: *api-env
+      AUTORUN_ENABLED: "false"
+    volumes:
+      - api_storage:/var/www/html/storage
+    depends_on:
+      sparky-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "healthcheck-schedule"]
+      start_period: 10s
+    networks:
+      - internal
+
+  sparky-mysql:
+    image: mysql:8.4
+    container_name: sparkylink_mysql
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-buffer-pool-size=${MYSQL_BUFFER_POOL:-256M}
+    environment:
+      # MYSQL_USER ne sme biti "root" - MySQL image odbija da startuje.
+      MYSQL_DATABASE: "${DB_DATABASE:-sparkylink}"
+      MYSQL_USER: "${DB_USERNAME:-sparkylink}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD mora biti postavljen}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD mora biti postavljen}"
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - internal
+
+  # HTML -> PDF (Chromium). Dostupan samo backendu.
+  sparky-gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: sparkylink_gotenberg
+    restart: unless-stopped
+    networks:
+      - internal
+
+  # Svake noci: dump baze, nedeljom i arhiva fajlova (slike, racuni, obracuni).
+  # Sve u volumen `backups`; starije od BACKUP_KEEP_DAYS dana se brise.
+  sparky-backup:
+    build:
+      context: ./docker/backup
+    image: sparkylink-backup:latest
+    container_name: sparkylink_backup
+    restart: unless-stopped
+    environment:
+      TZ: Europe/Belgrade
+      DB_HOST: sparky-mysql
+      DB_DATABASE: "${DB_DATABASE:-sparkylink}"
+      DB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      BACKUP_TIME: "${BACKUP_TIME:-02:30}"
+      BACKUP_KEEP_DAYS: "${BACKUP_KEEP_DAYS:-30}"
+    volumes:
+      - backups:/backups
+      - api_storage:/storage:ro
+    depends_on:
+      sparky-mysql:
+        condition: service_healthy
+    networks:
+      - internal

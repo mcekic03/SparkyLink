@@ -1,0 +1,50 @@
+{
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
+
+  // Use the repo's pinned Prettier and its config — never the version bundled
+  // with the extension, and never VS Code's built-in formatters.
+  "prettier.prettierPath": "./node_modules/prettier",
+  "prettier.configPath": "./.prettierrc",
+  "prettier.ignorePath": "./.prettierignore",
+  // Refuse to format when no Prettier config is found, rather than silently
+  // falling back to extension defaults.
+  "prettier.requireConfig": true,
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // Per-language overrides are required, not redundant: a language that ships its
+  // own formatter (JSON and HTML especially) ignores `editor.defaultFormatter` and
+  // silently uses the built-in one instead.
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[markdown]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[yaml]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+  // Prettier owns layout; nothing else reformats on save.
+  "js/ts.format.enabled": false,
+  "json.format.enable": false,
+  "html.format.enable": false,
+  "editor.formatOnPaste": false,
+
+  // Matches .editorconfig so unsaved buffers behave the same way.
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  // Use the workspace TypeScript (7.x), not the one bundled with VS Code.
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
+}

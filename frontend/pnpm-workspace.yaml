@@ -1,0 +1,27 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+# Only install package versions that have been published for at least one week.
+minimumReleaseAge: 10080
+
+allowBuilds:
+  # Native binaries — must run their install scripts to fetch/compile.
+  esbuild: true
+  unrs-resolver: true
+  # Only present transitively via vitest's mocker; its postinstall just writes
+  # the browser worker stub, which we don't use.
+  msw: false
+
+catalog:
+  # Runtime — must be the same instance everywhere
+  react: ^19.2.8
+  react-dom: ^19.2.8
+
+  # Types must match React version exactly
+  '@types/react': ^19.2.18
+  '@types/react-dom': ^19.2.4
+
+  # Shared tooling
+  tailwindcss: ^4.3.3
+  typescript: ^7.0.2

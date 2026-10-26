@@ -1,0 +1,9 @@
+# Lokalni Traefik (docker-compose.override.yml). Na serveru postoji pravi
+# `redirect-to-https`; lokalno je namerno prazan, da telefon na istoj Wi-Fi mrezi
+# radi preko obicnog HTTP-a (kamera uzivo radi tek na produkciji, preko HTTPS-a).
+http:
+  middlewares:
+    redirect-to-https:
+      headers:
+        customResponseHeaders:
+          X-Local-Traefik: "1"

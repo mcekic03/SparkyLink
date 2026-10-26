@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Classes\TimezoneAwareResource;
+use Illuminate\Http\Request;
+
+/** @mixin MODEL_NAME */
+class {{ class }} extends TimezoneAwareResource
+{
+    public function fromArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'created_at' => $this->whenHas('created_at'),
+        ];
+    }
+}

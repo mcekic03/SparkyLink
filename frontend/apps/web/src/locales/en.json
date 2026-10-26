@@ -1,0 +1,759 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "areYouSure": "Are you sure?",
+    "goHome": "Home",
+    "goToDashboard": "Overview",
+    "loading": "Loading...",
+    "retry": "Try again",
+    "save": "Save",
+    "saving": "Saving...",
+    "search": "Search",
+    "signOut": "Sign out",
+    "edit": "Edit",
+    "next": "Next",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "add": "Add",
+    "delete": "Delete",
+    "close": "Close",
+    "open": "Open",
+    "print": "Print",
+    "total": "Total",
+    "date": "Date",
+    "note": "Note",
+    "optional": "optional",
+    "none": "—",
+    "loadFailed": "Loading failed.",
+    "saveFailed": "Saving failed.",
+    "deleteFailed": "Deleting failed."
+  },
+  "currency": {
+    "1": "Dinar (RSD)",
+    "2": "Euro (EUR)"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "sr": "Srpski"
+  },
+  "nav": {
+    "groups": {
+      "general": "Business",
+      "administration": "Administration"
+    },
+    "dashboard": "Overview",
+    "sites": "Sites",
+    "receipts": "Receipts & warranties",
+    "priceList": "Price list",
+    "settings": "Settings",
+    "users": "Users",
+    "workspace": "Cekić Elektrik",
+    "commandPalette": {
+      "title": "Command palette",
+      "description": "Find a page and open it.",
+      "placeholder": "Type to search...",
+      "empty": "No results."
+    }
+  },
+  "unsavedChanges": {
+    "title": "Unsaved changes",
+    "description": "Leaving this page will discard your changes.",
+    "stay": "Stay on page",
+    "leave": "Discard changes"
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "description": "Sign in to manage your sites.",
+      "secureTitle": "SparkyLink",
+      "secureDescription": "Sites, costs and billing in one place.",
+      "action": "Sign in",
+      "pending": "Signing in...",
+      "email": "Email",
+      "password": "Password",
+      "emailPlaceholder": "name@example.com",
+      "failed": "Sign-in failed. Please try again.",
+      "submitFailed": "Submitting the sign-in form failed",
+      "navigationFailed": "Signed in, but navigation failed. Reload the page."
+    }
+  },
+  "dashboard": {
+    "title": "Overview",
+    "description": "Billing, costs and profit for the selected period.",
+    "loadFailed": "Loading the overview failed",
+    "from": "From",
+    "to": "To",
+    "thisYear": "This year",
+    "thisMonth": "This month",
+    "lastYear": "Last year",
+    "rateToday": "Rate today: 1 € = {{rate}} RSD",
+    "kpi": {
+      "billed": "Billed",
+      "costs": "Costs",
+      "profit": "Profit",
+      "paid": "Paid",
+      "receivables": "Receivables",
+      "receivablesHint": "Total owed by investors on {{count}} sites"
+    },
+    "sites": {
+      "offer": "Offers",
+      "open": "Open",
+      "closed": "Closed"
+    },
+    "monthly": {
+      "title": "Profit by month",
+      "description": "Last 12 months, in euros.",
+      "billed": "Billed",
+      "costs": "Costs",
+      "profit": "Profit"
+    },
+    "debtors": {
+      "title": "Who owes",
+      "empty": "Nobody owes anything."
+    },
+    "topSites": {
+      "title": "Most profitable sites",
+      "empty": "No data for the period."
+    }
+  },
+  "sites": {
+    "title": "Sites",
+    "description": "All sites, offers and work history.",
+    "loadFailed": "Loading sites failed",
+    "empty": "No sites.",
+    "searchPlaceholder": "Name, address, investor, phone",
+    "columns": {
+      "name": "Site",
+      "investor": "Investor",
+      "status": "Status",
+      "paymentStatus": "Payment",
+      "balance": "Owes",
+      "profit": "Profit",
+      "started": "Started"
+    },
+    "status": {
+      "1": "Offer – awaiting answer",
+      "2": "Open",
+      "3": "Closed"
+    },
+    "paymentStatus": {
+      "1": "Unpaid",
+      "2": "Partially paid",
+      "3": "Paid in full"
+    },
+    "filters": {
+      "status": "Work status",
+      "paymentStatus": "Payment status",
+      "trashed": "Deleted"
+    },
+    "create": {
+      "action": "New site",
+      "title": "New site",
+      "description": "Location, investor and billing currency.",
+      "submit": "Save site",
+      "failed": "Saving the site failed."
+    },
+    "edit": {
+      "title": "Edit site",
+      "failed": "Updating the site failed."
+    },
+    "form": {
+      "sectionSite": "Site",
+      "sectionInvestor": "Investor",
+      "sectionMoney": "Billing",
+      "name": "Name",
+      "namePlaceholder": "e.g. Petrović house, Čukarica",
+      "status": "Status",
+      "address": "Address",
+      "city": "City",
+      "description": "Description",
+      "investorName": "Name / company",
+      "investorPhone": "Phone",
+      "investorEmail": "Email",
+      "investorAddress": "Investor address",
+      "currency": "Billing currency",
+      "currencyHint": "The investor's debt is kept in this currency; the other one is shown at the exchange rate.",
+      "markup": "Material markup (%)",
+      "markupHint": "Empty = default from settings ({{value}} %).",
+      "startedAt": "Work started",
+      "completedAt": "Work finished",
+      "errors": {
+        "name": "Enter the site name.",
+        "email": "Enter a valid email.",
+        "markup": "Enter a percentage (e.g. 20)."
+      }
+    },
+    "delete": {
+      "action": "Delete site",
+      "confirm": "Delete the site? It can be restored from deleted sites.",
+      "failed": "Deleting the site failed."
+    },
+    "restore": {
+      "action": "Restore site",
+      "failed": "Restoring failed."
+    },
+    "detail": {
+      "loadFailed": "Loading the site failed",
+      "deleted": "This site has been deleted.",
+      "call": "Call",
+      "started": "Started: {{date}}",
+      "completed": "Finished: {{date}}",
+      "tabs": {
+        "overview": "Overview",
+        "items": "Items",
+        "labor": "Workers",
+        "payments": "Payments",
+        "documents": "Offers & invoices",
+        "receipts": "Fiscal receipts",
+        "media": "Photos & video",
+        "notes": "Notes"
+      }
+    }
+  },
+  "summary": {
+    "loadFailed": "Loading finances failed",
+    "billed": "To bill",
+    "costs": "Costs",
+    "profit": "Profit",
+    "paid": "Paid",
+    "balance": "Left to pay",
+    "overpaid": "Overpaid",
+    "materials": "Material",
+    "services": "Services (work)",
+    "other": "Other costs",
+    "labor": "Workers",
+    "purchase": "Purchase",
+    "sale": "Sale",
+    "margin": "Profit on material",
+    "personHours": "{{hours}} working hours",
+    "rateToday": "Other currency at today's rate: 1 € = {{rate}} RSD",
+    "noRate": "Today's rate is not available."
+  },
+  "items": {
+    "title": "Items",
+    "add": "New item",
+    "empty": "No items yet. Add material or a service, scan a fiscal receipt or import the store's Excel file.",
+    "loadFailed": "Loading items failed",
+    "noPurchasePrice": "purchase price not entered",
+    "select": {
+      "quick": "Quick select:",
+      "missing": "All without a purchase price ({{count}})",
+      "count": "Selected: {{count}}",
+      "sale": "For the investor",
+      "purchase": "Purchase now",
+      "clear": "Clear selection",
+      "setPurchase": "Set purchase price for selected",
+      "one": "Select: {{name}}"
+    },
+    "purchase": {
+      "title": "Purchase price for the selected items",
+      "description": "Selected items: {{count}}. The investor prices do not change.",
+      "sale": "Total for the investor",
+      "current": "Purchase now",
+      "mode": "How to work out the purchase price",
+      "byPercent": "Lower by a percentage",
+      "byTotal": "I paid in total",
+      "percent": "How many percent lower",
+      "percentPreview": "Purchase in total ≈ {{total}}",
+      "percentInvalid": "Enter a percentage from 0 to 100 (e.g. 10 or 12.5).",
+      "total": "How much I paid",
+      "totalPreview": "That is {{percent}} % less than the investor price.",
+      "totalPreviewHigher": "That is {{percent}} % more than the investor price.",
+      "totalInvalid": "Enter an amount (e.g. 900 or 99,954.50).",
+      "currency": "Currency",
+      "note": "Each selected item gets a purchase price in proportion to its investor price, so the total is exactly what you paid. The investor still pays the same prices.",
+      "submit": "Set purchase prices",
+      "failed": "Setting the purchase prices failed."
+    },
+    "totals": {
+      "spent": {
+        "1": "Spent on material",
+        "3": "Spent on other",
+        "all": "Spent on material and other"
+      },
+      "owed": {
+        "1": "Investor owes for material",
+        "2": "Investor owes for services",
+        "3": "Investor owes for other",
+        "all": "Investor owes for all items"
+      },
+      "loadFailed": "Loading the totals failed"
+    },
+    "import": {
+      "button": "Import Excel",
+      "title": "Import material from Excel",
+      "description": "Prices in the file are the investor's prices. Until you enter the real purchase price, it counts as that same price, so the material makes no profit.",
+      "pick": "Choose files",
+      "pickHint": "The store's Excel files (.xls or .xlsx), several at once if needed. Only the first sheet is read.",
+      "dropHint": "or drop them here",
+      "reading": "Reading files...",
+      "addFiles": "Add more files",
+      "date": "Items date",
+      "selectAll": "All",
+      "select": "Import this item",
+      "price": "Price for the investor",
+      "fileItems": "items: {{count}}",
+      "selected": "Selected: {{count}} · total {{total}}",
+      "submit": "Add items ({{count}})",
+      "importing": "Adding...",
+      "invalid": "Check the name and the price in the selected rows.",
+      "empty": "The chosen files contain no items.",
+      "readFailed": "Reading the files failed.",
+      "saveFailed": "Adding the items failed."
+    },
+    "all": "All",
+    "filters": {
+      "search": "Search by name",
+      "source": "Item source",
+      "sources": {
+        "all": "All sources",
+        "manual": "Entered by hand",
+        "import": "Excel import",
+        "receipt": "Fiscal receipt (QR)"
+      },
+      "clear": "Clear search and filter",
+      "none": "No item matches the search or the filter."
+    },
+    "type": {
+      "1": "Material",
+      "2": "Service",
+      "3": "Other"
+    },
+    "columns": {
+      "name": "Name",
+      "quantity": "Quantity",
+      "purchase": "Purchase",
+      "sale": "For investor",
+      "date": "Date"
+    },
+    "notBilled": "not billed",
+    "fromReceipt": "from receipt",
+    "fromImport": "from Excel",
+    "edit": "Edit item",
+    "create": "New item",
+    "form": {
+      "type": "Type",
+      "currency": "Price currency",
+      "name": "Name",
+      "namePlaceholder": "e.g. PP-Y 3x2.5 cable or Socket installation",
+      "unit": "Unit",
+      "quantity": "Quantity",
+      "purchasePrice": "Purchase price per unit",
+      "purchasePriceHint": "What you paid.",
+      "purchaseEstimatedHint": "Not entered – until it is, it counts as the investor's price (no profit).",
+      "salePrice": "Price for the investor per unit",
+      "salePriceHint": "Suggested: purchase + {{markup}} % markup.",
+      "applyMarkup": "Apply markup",
+      "date": "Date",
+      "rate": "Rate (1 € = RSD)",
+      "rateHint": "NBS middle rate for the chosen day; can be changed.",
+      "rateMissing": "The rate is not available – enter it.",
+      "note": "Note",
+      "billable": "Billed to the investor",
+      "lineTotal": "Total: {{purchase}} purchase · {{sale}} for the investor",
+      "suggestions": "From the price list and earlier items",
+      "fromPriceList": "price list",
+      "fromHistory": "earlier"
+    },
+    "errors": {
+      "name": "Enter a name.",
+      "quantity": "Enter a quantity greater than zero.",
+      "price": "Enter a price (e.g. 120 or 120.50).",
+      "date": "Choose a date.",
+      "rate": "Enter the rate (e.g. 117.25)."
+    },
+    "delete": {
+      "confirm": "Delete the item?",
+      "failed": "Deleting the item failed."
+    },
+    "saveFailed": "Saving the item failed."
+  },
+  "labor": {
+    "title": "Workers",
+    "add": "Record work",
+    "empty": "No work recorded yet.",
+    "loadFailed": "Loading work failed",
+    "columns": {
+      "date": "Date",
+      "workers": "Workers",
+      "hours": "Hours",
+      "rate": "Hourly rate",
+      "total": "Cost"
+    },
+    "create": "Record work",
+    "edit": "Edit work",
+    "form": {
+      "date": "Date",
+      "workers": "Number of workers",
+      "hours": "Hours per worker",
+      "hourlyRate": "Hourly rate",
+      "currency": "Currency",
+      "rate": "Rate (1 € = RSD)",
+      "description": "Description (who worked, what)",
+      "total": "Cost of the day: {{total}}"
+    },
+    "errors": {
+      "workers": "Enter the number of workers.",
+      "hours": "Enter the hours (up to 24).",
+      "hourlyRate": "Enter the hourly rate."
+    },
+    "delete": {
+      "confirm": "Delete the work entry?",
+      "failed": "Deleting failed."
+    },
+    "saveFailed": "Saving the work failed."
+  },
+  "payments": {
+    "title": "Investor payments",
+    "add": "New payment",
+    "empty": "No payments yet.",
+    "loadFailed": "Loading payments failed",
+    "create": "New payment",
+    "edit": "Edit payment",
+    "form": {
+      "date": "Payment date",
+      "amount": "Amount",
+      "currency": "Currency",
+      "rate": "Rate (1 € = RSD)",
+      "note": "Note (e.g. advance, cash)"
+    },
+    "errors": {
+      "amount": "Enter an amount greater than zero."
+    },
+    "delete": {
+      "confirm": "Delete the payment?",
+      "failed": "Deleting the payment failed."
+    },
+    "saveFailed": "Saving the payment failed."
+  },
+  "documents": {
+    "title": "Offers and final invoices",
+    "description": "PDF for the investor. Only billable items – no purchase prices or profit.",
+    "createOffer": "Create offer",
+    "createInvoice": "Create final invoice",
+    "empty": "No documents issued yet.",
+    "loadFailed": "Loading documents failed",
+    "type": {
+      "1": "Offer",
+      "2": "Final invoice"
+    },
+    "columns": {
+      "number": "Number",
+      "date": "Date",
+      "total": "Total",
+      "balance": "Owes"
+    },
+    "form": {
+      "offerTitle": "New offer",
+      "invoiceTitle": "New final invoice",
+      "offerHint": "The offer carries a prominent notice that material and quantities may differ from the final invoice.",
+      "invoiceHint": "The final invoice lists all payments and the remaining debt.",
+      "issuedAt": "Document date",
+      "note": "Note on the document",
+      "itemized": "Material item by item",
+      "itemizedHint": "Off: material as a single total line.",
+      "submit": "Create PDF"
+    },
+    "openPdf": "Open PDF",
+    "createFailed": "Creating the document failed.",
+    "delete": {
+      "confirm": "Delete the document?",
+      "failed": "Deleting the document failed."
+    }
+  },
+  "receipts": {
+    "title": "Receipts & warranties",
+    "description": "All fiscal receipts from the sites. Find a receipt and print a copy for a warranty claim.",
+    "siteTitle": "Fiscal receipts",
+    "loadFailed": "Loading receipts failed",
+    "empty": "No receipts.",
+    "searchPlaceholder": "Store, tax ID, receipt number, article",
+    "scan": "Scan receipt",
+    "status": {
+      "1": "Waiting to be fetched",
+      "2": "Fetched",
+      "3": "Error",
+      "4": "Receipt photo"
+    },
+    "columns": {
+      "store": "Store",
+      "date": "Date",
+      "total": "Total",
+      "site": "Site",
+      "status": "Status",
+      "items": "Items"
+    },
+    "copy": "Copy for warranty",
+    "photo": "Receipt photo",
+    "journal": "Receipt text",
+    "refetch": "Fetch again",
+    "importItems": "Import items",
+    "fetchError": "Last error: {{error}}",
+    "delete": {
+      "confirm": "Delete the receipt and the items imported from it?",
+      "failed": "Deleting the receipt failed."
+    },
+    "scanner": {
+      "title": "Scan a fiscal receipt",
+      "description": "Point the camera at the QR code on the receipt or take a photo of it.",
+      "camera": "Camera",
+      "cameraHint": "The live camera works only over HTTPS (in production). Locally, take a photo of the receipt.",
+      "takePhoto": "Take a photo",
+      "choosePhoto": "Choose an image",
+      "pasteLink": "Or paste the QR code link",
+      "pasteLinkPlaceholder": "https://suf.purs.gov.rs/v/?vl=...",
+      "fetch": "Fetch receipt",
+      "fetching": "Fetching the receipt...",
+      "decoding": "Looking for the QR code in the image...",
+      "noQr": "No QR code found in the image. Take a closer, sharper photo, or save just the receipt photo.",
+      "notReceipt": "The QR code is not from a fiscal receipt.",
+      "cameraFailed": "The camera is not available.",
+      "saveOnlyPhoto": "Save just the receipt photo",
+      "manualNote": "Note (e.g. boiler – 2-year warranty)",
+      "manualStore": "Store",
+      "manualDate": "Receipt date"
+    },
+    "preview": {
+      "title": "Items on the receipt",
+      "store": "Store",
+      "date": "Date",
+      "total": "Receipt total",
+      "select": "Import",
+      "selectAll": "All",
+      "markup": "Markup (%)",
+      "applyMarkup": "Apply to all",
+      "purchase": "Purchase",
+      "sale": "For investor",
+      "import": "Save receipt and import items",
+      "importing": "Saving...",
+      "notFetched": "The Tax Administration site is not responding. The receipt can be saved and its items imported later.",
+      "saveWaiting": "Save the receipt for later",
+      "selected": "{{count}} items selected"
+    },
+    "saveFailed": "Saving the receipt failed.",
+    "previewFailed": "Fetching the receipt failed."
+  },
+  "media": {
+    "title": "Photos & video",
+    "description": "E.g. where the cables run before plastering.",
+    "upload": "Add photos or video",
+    "uploading": "Uploading {{current}} of {{total}}...",
+    "uploaded": "Files uploaded: {{count}}",
+    "empty": "No photos or videos yet.",
+    "loadFailed": "Loading files failed",
+    "caption": "Caption",
+    "captionPlaceholder": "e.g. Bathroom wiring",
+    "tooLarge": "{{name}} is larger than {{max}} MB.",
+    "failed": "Uploading {{name}} failed.",
+    "video": "Video",
+    "delete": {
+      "confirm": "Delete the file?",
+      "failed": "Deleting the file failed."
+    }
+  },
+  "notes": {
+    "title": "Notes",
+    "add": "Add note",
+    "placeholder": "E.g. the investor wants 3 more sockets in the living room",
+    "empty": "No notes yet.",
+    "loadFailed": "Loading notes failed",
+    "saveFailed": "Saving the note failed.",
+    "delete": {
+      "confirm": "Delete the note?",
+      "failed": "Deleting the note failed."
+    }
+  },
+  "priceList": {
+    "title": "Price list",
+    "description": "Services and material with usual prices – offered when adding items.",
+    "add": "New price list item",
+    "empty": "The price list is empty.",
+    "loadFailed": "Loading the price list failed",
+    "searchPlaceholder": "Name",
+    "columns": {
+      "name": "Name",
+      "type": "Type",
+      "unit": "Unit",
+      "purchase": "Purchase",
+      "sale": "For investor",
+      "active": "Active"
+    },
+    "create": "New price list item",
+    "edit": "Edit price list item",
+    "form": {
+      "active": "Offered when adding items"
+    },
+    "saveFailed": "Saving failed.",
+    "delete": {
+      "confirm": "Delete the price list item?",
+      "failed": "Deleting failed."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Company details for offers and invoices, defaults and the exchange rate.",
+    "loadFailed": "Loading settings failed",
+    "saveFailed": "Saving settings failed.",
+    "company": {
+      "title": "Company details",
+      "name": "Company name",
+      "address": "Address",
+      "city": "City",
+      "phone": "Phone",
+      "email": "Email",
+      "pib": "Tax ID (PIB)",
+      "mb": "Registration number",
+      "bankAccount": "Bank account",
+      "website": "Website"
+    },
+    "defaults": {
+      "title": "Defaults",
+      "currency": "Billing currency for new sites",
+      "markup": "Material markup (%)"
+    },
+    "notes": {
+      "title": "Notes on the PDF",
+      "offer": "Note on the offer (large)",
+      "offerHint": "Disclaimer that material and quantities may differ from the final invoice.",
+      "invoice": "Note on the final invoice"
+    },
+    "logo": {
+      "title": "Company logo",
+      "description": "Appears on offers, invoices and in the app. PNG or JPG, up to 5 MB.",
+      "upload": "Change logo",
+      "failed": "Saving the logo failed."
+    },
+    "rates": {
+      "title": "Euro exchange rate",
+      "description": "The NBS middle rate is fetched automatically every morning. You can enter a rate manually here.",
+      "date": "Day",
+      "rate": "1 € = RSD",
+      "source": {
+        "1": "NBS",
+        "2": "Manual"
+      },
+      "save": "Save rate",
+      "failed": "Saving the rate failed.",
+      "empty": "No rates fetched yet."
+    }
+  },
+  "users": {
+    "title": "Users",
+    "description": "Accounts with access to the app. A worker sees sites, photos, notes and receipts, but no money.",
+    "loadFailed": "Loading users failed",
+    "empty": "No users found.",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "createdAt": "Created"
+    },
+    "roles": {
+      "1": "Super administrator",
+      "2": "Administrator",
+      "3": "Worker"
+    },
+    "edit": {
+      "title": "Edit user",
+      "description": "Update details for {{name}}.",
+      "loadFailed": "Loading the user failed",
+      "updateFailed": "Updating the user failed.",
+      "invalidRole": "Choose a valid role.",
+      "namePlaceholder": "Full name",
+      "passwordHint": "Leave empty to keep the current one",
+      "confirmPassword": "Confirm password",
+      "repeatPassword": "Repeat the new password",
+      "selectRole": "Choose a role"
+    },
+    "create": {
+      "action": "New user",
+      "title": "New user",
+      "description": "An administrator sees everything except users and settings; a worker sees no amounts or profit.",
+      "submit": "Create account",
+      "passwordHint": "At least 8 characters, upper and lower case letters and a symbol.",
+      "failed": "Creating the account failed.",
+      "errors": {
+        "name": "Enter a name.",
+        "email": "Enter a valid email.",
+        "password": "The password must have at least 8 characters.",
+        "passwordMatch": "The passwords do not match."
+      }
+    },
+    "allRoles": "All roles",
+    "searchPlaceholder": "Search",
+    "delete": {
+      "action": "Delete user",
+      "pending": "Deleting...",
+      "failed": "Deleting the user failed.",
+      "confirm": "Delete user {{name}}? This cannot be undone.",
+      "selected": "Delete selected",
+      "confirmSelected": "Delete the selected users? This cannot be undone.",
+      "selectedSuccess": "The selected users were deleted.",
+      "selectedFailed": "Deleting the selected users failed."
+    }
+  },
+  "table": {
+    "selectionCount": "{{selected}} of {{total}} selected",
+    "pageRange": "{{from}}–{{to}} of {{total}}",
+    "paginationTop": "Pagination, above the table",
+    "paginationBottom": "Pagination, below the table",
+    "goToPage": "Go to page {{page}}",
+    "firstPage": "First page",
+    "lastPage": "Last page",
+    "previous": "Previous page",
+    "next": "Next page",
+    "columns": "Columns",
+    "filters": "Filters",
+    "filterDescription": "Filter the table data",
+    "filterBuilder": {
+      "addFilter": "Filter",
+      "all": "Any",
+      "pickDate": "Pick a date"
+    },
+    "clearFilters": "Clear filters",
+    "clearSelection": "Clear selection",
+    "bulkActions": "Bulk actions",
+    "export": {
+      "csv": "Export CSV",
+      "excel": "Export Excel",
+      "pdf": "Export PDF"
+    },
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "actions": "Actions",
+    "toggleColumns": "Toggle columns",
+    "empty": {
+      "title": "Nothing here yet",
+      "description": "There is nothing to show.",
+      "filtered": "No rows match the current filters."
+    }
+  },
+  "errors": {
+    "generic": {
+      "title": "Something went wrong",
+      "description": "An unexpected error occurred."
+    },
+    "notFound": {
+      "title": "Page not found",
+      "description": "That page does not exist or has moved."
+    },
+    "forbidden": {
+      "title": "No access",
+      "description": "Your account is not allowed to open that page. If you think it should be, contact an administrator."
+    },
+    "api": {
+      "network": "The server is not reachable. Check your connection.",
+      "unauthenticated": "Your session has expired. Sign in again.",
+      "forbidden": "You are not allowed to do that.",
+      "notFound": "The item was not found.",
+      "validation": "Check the highlighted fields.",
+      "server": "A server error occurred. Please try again.",
+      "unknown": "Something went wrong. Please try again."
+    }
+  },
+  "theme": {
+    "toggle": "Toggle theme"
+  }
+}

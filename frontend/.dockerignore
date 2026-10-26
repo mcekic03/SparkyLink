@@ -1,0 +1,29 @@
+# Git / Docker
+.git
+.gitignore
+.gitattributes
+docker-compose.yml
+docker-compose.override.yml
+.dockerignore
+.env
+.env.*
+.env.docker*
+
+# Zavisnosti i build artefakti - prave se u build fazi
+node_modules
+**/node_modules
+**/dist
+**/dist-ssr
+.turbo
+**/.turbo
+**/.tanstack
+coverage
+**/coverage
+
+# Dokumentacija i IDE
+docs
+*.md
+.idea
+.vscode
+.omc
+.pnpm-store

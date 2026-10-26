@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "pnpm-workspace.yaml",
+    "packages/tsconfig/base.json",
+    ".prettierrc",
+    ".prettierignore"
+  ],
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!vitest.config.ts",
+        "!src/test/**"
+      ]
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "lint": {
+      "inputs": ["$TURBO_DEFAULT$", ".oxlintrc.json"],
+      "outputs": []
+    },
+    "test": {
+      "outputs": []
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}

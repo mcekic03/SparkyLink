@@ -1,0 +1,11 @@
+# Svuda LF, i na Windows-u: skripte i fajlovi koji idu u Docker (Linux) ne rade sa CRLF.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.webp binary
+*.wasm binary
+*.woff binary
+*.woff2 binary

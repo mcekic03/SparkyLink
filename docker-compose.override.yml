@@ -1,0 +1,136 @@
+# Lokalno pokretanje. Compose ucitava ovaj fajl automatski uz docker-compose.yml;
+# na serveru se NE koristi (Portainer deployuje samo docker-compose.yml).
+#
+#   docker network create proxy        (jednom)
+#   docker compose up -d --build       -> http://localhost i http://<IP racunara>
+#
+# Na serveru Traefik vec radi; lokalno ga dize ovaj fajl, sa istim imenima
+# entrypoint-a (web, websecure) i middleware-a (redirect-to-https@file). Lokalno
+# nema domena ni Let's Encrypt-a, pa rute hvataju svaku adresu (localhost, IP
+# racunara za telefon na istoj Wi-Fi mrezi), a HTTP se ne preusmerava na HTTPS.
+#
+# Alati za razvoj (profil `tools`, ne dizu se sami):
+#   docker compose run --rm sparky-dev composer install
+#   docker compose run --rm sparky-dev php artisan test
+#   docker compose run --rm sparky-node pnpm install
+#   docker compose run --rm sparky-node pnpm verify
+
+volumes:
+  api_vendor:
+  web_node_modules:
+  web_app_node_modules:
+  web_ui_node_modules:
+  web_tsconfig_node_modules:
+
+x-local-env: &local-env
+  APP_ENV: local
+  APP_DEBUG: "true"
+  APP_URL: "http://localhost"
+  LOG_CHANNEL: stderr
+  LOG_LEVEL: debug
+
+services:
+  traefik:
+    image: traefik:v3.6
+    container_name: sparkylink_traefik
+    restart: unless-stopped
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=${TRAEFIK_NETWORK:-proxy}
+      - --providers.file.filename=/etc/traefik/dynamic.yml
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Otpremanje velikih video snimaka sporim internetom traje duze od 60 s.
+      - --entrypoints.web.transport.respondingTimeouts.readTimeout=15m
+      - --entrypoints.websecure.transport.respondingTimeouts.readTimeout=15m
+      - --api.insecure=true
+      - --log.level=WARN
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${TRAEFIK_DASHBOARD_PORT:-8090}:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+    networks:
+      - proxy
+
+  sparky-web:
+    labels:
+      - traefik.http.routers.sparkylink.rule=PathPrefix(`/`)
+      - traefik.http.routers.sparkylink.tls=true
+      - traefik.http.routers.sparkylink.tls.certresolver=
+      - traefik.http.routers.sparkylink-insecure.rule=PathPrefix(`/`)
+
+  sparky-api:
+    environment:
+      <<: *local-env
+      AUTORUN_LARAVEL_CONFIG_CACHE: "false"
+      AUTORUN_LARAVEL_ROUTE_CACHE: "false"
+      AUTORUN_LARAVEL_VIEW_CACHE: "false"
+      AUTORUN_LARAVEL_EVENT_CACHE: "false"
+
+  sparky-queue:
+    environment: *local-env
+
+  sparky-schedule:
+    environment: *local-env
+
+  sparky-mysql:
+    ports:
+      - "${DB_PORT_HOST:-3310}:3306"
+    volumes:
+      # Pravi i test bazu `<DB_DATABASE>_test` za Pest (samo pri prvom startu volumena).
+      - ./docker/mysql/init.sh:/docker-entrypoint-initdb.d/01-init.sh:ro
+
+  # PHP alati (composer, artisan, Pest) nad kodom sa hosta; vendor je u volumenu.
+  sparky-dev:
+    profiles: [tools]
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: tools
+    image: sparkylink-api:tools
+    user: root
+    working_dir: /var/www/html
+    environment:
+      <<: *local-env
+      COMPOSER_ALLOW_SUPERUSER: "1"
+      APP_KEY: "${APP_KEY}"
+      DB_CONNECTION: mysql
+      DB_HOST: sparky-mysql
+      DB_PORT: 3306
+      DB_DATABASE: "${DB_DATABASE:-sparkylink}"
+      DB_USERNAME: "${DB_USERNAME:-sparkylink}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      GOTENBERG_URL: http://sparky-gotenberg:3000
+    volumes:
+      - ./backend:/var/www/html
+      - api_vendor:/var/www/html/vendor
+    networks:
+      - internal
+
+  # Node alati (pnpm install, testovi, build, Vite dev server na :3000).
+  sparky-node:
+    profiles: [tools]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    image: sparkylink-web:dev
+    working_dir: /app
+    command: ["sh", "-c", "pnpm install && pnpm --filter @app/web exec vite dev --host 0.0.0.0 --port 3000"]
+    environment:
+      # Bind mount sa Windows-a ne salje file event-e; Vite onda anketira fajlove.
+      DOCKER_POLLING: "1"
+      VITE_DEV_API_PROXY: http://sparky-web
+    ports:
+      - "${WEB_DEV_PORT:-3000}:3000"
+    volumes:
+      - ./frontend:/app
+      - web_node_modules:/app/node_modules
+      - web_app_node_modules:/app/apps/web/node_modules
+      - web_ui_node_modules:/app/packages/ui/node_modules
+      - web_tsconfig_node_modules:/app/packages/tsconfig/node_modules
+    networks:
+      - internal

@@ -1,0 +1,8 @@
+# Lokalne tajne i promenljive stack-a
+.env
+.env.docker
+
+# IDE
+.idea
+.vscode
+!frontend/.vscode

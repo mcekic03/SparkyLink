@@ -1,0 +1,27 @@
+{
+  "name": "stara-vodenica-web",
+  "private": true,
+  "packageManager": "pnpm@11.13.0",
+  "type": "module",
+  "engines": {
+    "node": ">=24.15.0",
+    "pnpm": ">=11"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "preview": "pnpm --filter @app/web preview",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm format",
+    "check": "pnpm format:fix && pnpm -r lint:fix"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.8",
+    "typescript": "catalog:"
+  }
+}

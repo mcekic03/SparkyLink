@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <!--
+            U Docker-u konfiguracija stize kroz env promenljive kontejnera (razvojna
+            baza, pravi SMTP) i Laravel ih cita iz $_SERVER pre svega ostalog. Zato
+            <server force="true"> - obican <env> ih ne bi pregazio, RefreshDatabase bi
+            obrisao razvojnu bazu, a testovi bi slali prave mejlove.
+            tests/Unit/TestDatabaseGuardTest.php cuva ovo pravilo.
+        -->
+        <server name="APP_ENV" value="testing" force="true"/>
+        <server name="DB_DATABASE" value="sparkylink_test" force="true"/>
+        <server name="CACHE_STORE" value="array" force="true"/>
+        <server name="SESSION_DRIVER" value="array" force="true"/>
+        <server name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <server name="MAIL_MAILER" value="array" force="true"/>
+        <server name="LOG_CHANNEL" value="single" force="true"/>
+        <server name="GOTENBERG_URL" value="http://gotenberg.test" force="true"/>
+        <!-- Samo za testove; prava lozinka je samo u .env na racunaru i serveru. -->
+        <server name="SECRET_PASSWORD" value="Lozinka-samo-za-testove-1" force="true"/>
+        <server name="ADMIN_EMAIL" value="vlasnik@sparkylink.test" force="true"/>
+        <env name="APP_ENV" value="testing" force="true"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="DB_DATABASE" value="sparkylink_test" force="true"/>
+        <env name="CACHE_STORE" value="array" force="true"/>
+        <env name="SESSION_DRIVER" value="array" force="true"/>
+        <env name="QUEUE_CONNECTION" value="sync" force="true"/>
+        <env name="MAIL_MAILER" value="array" force="true"/>
+        <env name="LOG_CHANNEL" value="single" force="true"/>
+        <env name="PULSE_ENABLED" value="false"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+    </php>
+</phpunit>
