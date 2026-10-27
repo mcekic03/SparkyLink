@@ -296,12 +296,23 @@
       "price": "Cena za investitora",
       "fileItems": "stavki: {{count}}",
       "selected": "Izabrano: {{count}} · ukupno {{total}}",
-      "submit": "Dodaj stavke ({{count}})",
+      "submit": "Uvezi ({{count}})",
       "importing": "Dodajem...",
       "invalid": "Proverite naziv i cenu u označenim redovima.",
       "empty": "U izabranim fajlovima nema stavki.",
       "readFailed": "Čitanje fajlova nije uspelo.",
-      "saveFailed": "Dodavanje stavki nije uspelo."
+      "saveFailed": "Dodavanje stavki nije uspelo.",
+      "versionOf": "Da li je ovo nova verzija ranijeg uvoza",
+      "asNew": "Novi dokument – sve se dodaje",
+      "asVersion": "Nova verzija: {{file}} · {{date}} (isto {{same}}, izmenjeno {{changed}})",
+      "versionSummary": "Isto: {{same}} (preskače se) · izmenjeno: {{changed}} · novo: {{new}}",
+      "versionMissing": "iz ranijeg uvoza nema ih ovde: {{count}} (ostaju kako jesu)",
+      "status": {
+        "same": "već postoji",
+        "changed": "izmenjeno",
+        "new": "novo"
+      },
+      "previous": "ranije: {{quantity}} {{unit}} × {{price}}"
     },
     "all": "Sve",
     "filters": {

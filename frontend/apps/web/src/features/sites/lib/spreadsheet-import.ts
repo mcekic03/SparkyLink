@@ -1,11 +1,13 @@
 import { normalizeDecimal } from '#/lib/money'
-import type { SpreadsheetFile, SpreadsheetImportPayload } from '../types'
+import type { SpreadsheetCandidate, SpreadsheetFile, SpreadsheetImportPayload } from '../types'
 
 /** Jedan red pregleda: šta piše u fajlu prodavnice, sa cenom koju korisnik može da ispravi. */
 export interface SpreadsheetRow {
   key: string
   /** Redni broj fajla iz kog je red, kroz sve do sada pročitane fajlove. */
   group: number
+  /** Redni broj reda u svom fajlu (za poređenje sa ranijim uvozom). */
+  line: number
   file: string
   name: string
   unit: string
@@ -15,12 +17,23 @@ export interface SpreadsheetRow {
   selected: boolean
 }
 
+/** Jedan pročitani fajl: raniji uvozi sa kojima deli stavke i predlog čija je nova verzija. */
+export interface SpreadsheetGroup {
+  group: number
+  name: string
+  candidates: SpreadsheetCandidate[]
+  suggested: number | null
+}
+
+export type RowStatus = 'same' | 'changed' | 'new'
+
 /** Redovi svih pročitanih fajlova, svi izabrani. `offset` je broj ranije pročitanih fajlova. */
 export function rowsFromFiles(files: SpreadsheetFile[], offset = 0): SpreadsheetRow[] {
   return files.flatMap((file, index) =>
     file.items.map((item, line) => ({
       key: `${String(offset + index)}-${String(line)}`,
       group: offset + index,
+      line,
       file: file.name,
       name: item.name,
       unit: item.unit,
@@ -29,6 +42,27 @@ export function rowsFromFiles(files: SpreadsheetFile[], offset = 0): Spreadsheet
       selected: true,
     })),
   )
+}
+
+export function groupsFromFiles(files: SpreadsheetFile[], offset = 0): SpreadsheetGroup[] {
+  return files.map((file, index) => ({
+    group: offset + index,
+    name: file.name,
+    candidates: file.candidates,
+    suggested: file.suggested_import_id,
+  }))
+}
+
+/** Stanje reda prema izabranom ranijem uvozu; kao nov dokument, sve je novo. */
+export function rowMatch(
+  row: Pick<SpreadsheetRow, 'line'>,
+  group: SpreadsheetGroup | undefined,
+  target: number | null,
+): { status: RowStatus; previous: SpreadsheetCandidate['rows'][number]['previous'] } {
+  const candidate = target === null ? undefined : group?.candidates.find((option) => option.import_id === target)
+  const match = candidate?.rows[row.line]
+
+  return match ? { status: match.status, previous: match.previous } : { status: 'new', previous: null }
 }
 
 /**
@@ -52,12 +86,19 @@ export function isRowValid(row: SpreadsheetRow): boolean {
   return row.name.trim() !== '' && price !== null && Number(price) >= 0
 }
 
-/** Izabrani redovi po fajlu iz kog su (svaki fajl postaje jedan uvoz); prazni fajlovi otpadaju. */
-export function importPayload(rows: SpreadsheetRow[], day: string): SpreadsheetImportPayload {
+/**
+ * Izabrani redovi po fajlu iz kog su; fajl sa izabranim ranijim uvozom ide kao njegova nova
+ * verzija (backend preskače iste, menja izmenjene, dodaje nove). Prazni fajlovi otpadaju.
+ */
+export function importPayload(
+  rows: SpreadsheetRow[],
+  day: string,
+  targets: ReadonlyMap<number, number | null> = new Map(),
+): SpreadsheetImportPayload {
   const files = new Map<number, SpreadsheetImportPayload['files'][number]>()
 
   for (const row of rows.filter((candidate) => candidate.selected)) {
-    const file = files.get(row.group) ?? { name: row.file, items: [] }
+    const file = files.get(row.group) ?? { name: row.file, merge_into: targets.get(row.group) ?? null, items: [] }
     file.items.push({
       name: row.name.trim(),
       unit: row.unit,

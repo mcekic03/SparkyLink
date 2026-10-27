@@ -4,7 +4,9 @@ namespace App\Http\Requests\SiteItem\Admin;
 
 use App\Classes\LocalizedFormRequest;
 use App\Classes\Utilities\Ruly;
+use App\Models\Site;
 use App\Traits\FormRequest\NormalizesDecimals;
+use Illuminate\Validation\Rules\Exists;
 
 /**
  * Stavke iz Excel fajlova koje je korisnik ostavio u pregledu, po fajlu; idu kao materijal.
@@ -15,10 +17,18 @@ class ImportSiteItemsRequest extends LocalizedFormRequest
 
     public function rules(): array
     {
+        /** @var Site $site */
+        $site = $this->route('site');
+
         return [
             'occurred_at' => Ruly::make(true)->dateFormat('Y-m-d')->assign(),
             'files' => Ruly::make(true)->array()->max(10)->assign(),
             'files.*.name' => Ruly::make(true)->fullString()->assign(),
+            // Fajl je nova verzija ranijeg uvoza ovog gradilista.
+            'files.*.merge_into' => Ruly::make(false)
+                                        ->integer()
+                                        ->exists('item_imports', 'id', fn (Exists $rule) => $rule->where('site_id', $site->id))
+                                        ->assign(),
             'files.*.items' => Ruly::make(true)->array()->max(1000)->assign(),
             'files.*.items.*.name' => Ruly::make(true)->fullString()->assign(),
             'files.*.items.*.unit' => Ruly::make(false)->fullString(20)->assign(),

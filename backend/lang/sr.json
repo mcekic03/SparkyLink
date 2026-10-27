@@ -37,6 +37,7 @@
     "spreadsheet_unreadable": "Fajl ne može da se pročita kao Excel tabela.",
     "spreadsheet_no_items_table": "Na prvom listu nije pronađena tabela sa stavkama (kolone naziv, količina i cena).",
     "spreadsheet_items_imported": "Dodato stavki materijala: :count.",
+    "spreadsheet_items_merged": "Dodato: :added, izmenjeno: :updated, bez promene: :unchanged.",
     "attribute_spreadsheet_files": "Excel fajlovi",
     "attribute_spreadsheet_file": "Excel fajl",
     "attribute_items_date": "datum stavki",

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SiteItem\Admin;
 
 use App\Actions\SiteItem\Admin\ImportSiteItemsAction;
+use App\Actions\SiteItem\Admin\MatchSpreadsheetFilesAction;
 use App\Actions\SiteItem\Admin\ReadSpreadsheetItemsAction;
 use App\Actions\SiteItem\Admin\SaveSiteItemAction;
 use App\Actions\SiteItem\Admin\SetPurchasePricesAction;
@@ -58,17 +59,20 @@ class SiteItemController extends Controller
     {
         /** @var array<int, UploadedFile> $files */
         $files = $request->file('files');
+        $read = array_map(fn (UploadedFile $file) => ReadSpreadsheetItemsAction::make()->handle($file), $files);
 
-        return response()->success(data: [
-            'files' => array_map(fn (UploadedFile $file) => ReadSpreadsheetItemsAction::make()->handle($file), $files),
-        ]);
+        return response()->success(data: ['files' => MatchSpreadsheetFilesAction::make()->handle($site, $read)]);
     }
 
     public function import(ImportSiteItemsRequest $request, Site $site): JsonResponse
     {
-        $count = ImportSiteItemsAction::make()->handle($site, $request->validated('occurred_at'), $request->validated('files'));
+        $counts = ImportSiteItemsAction::make()->handle($site, $request->validated('occurred_at'), $request->validated('files'));
 
-        return response()->success(message: __('spreadsheet_items_imported', ['count' => $count]));
+        $message = $counts['updated'] + $counts['unchanged'] === 0
+            ? __('spreadsheet_items_imported', ['count' => $counts['added']])
+            : __('spreadsheet_items_merged', $counts);
+
+        return response()->success(message: $message, data: $counts);
     }
 
     /**

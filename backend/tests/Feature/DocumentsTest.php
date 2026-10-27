@@ -81,7 +81,8 @@ test('later item changes do not change an issued document', function () {
 
 test('a site without billable items cannot get a document, and the pdf link is signed', function () {
     $empty = Site::factory()->create();
-    $this->postJson("/api/admin/sites/{$empty->id}/documents", ['type' => DocumentType::OFFER->value])
+    // Fiksan dan (kao u ostalim testovima), da test ne zavisi od danasnjeg kursa.
+    $this->postJson("/api/admin/sites/{$empty->id}/documents", ['type' => DocumentType::OFFER->value, 'issued_at' => '2026-10-26'])
          ->assertUnprocessable()->assertJsonValidationErrors('type');
 
     $document = $this->postJson("/api/admin/sites/{$this->site->id}/documents", ['type' => DocumentType::OFFER->value, 'issued_at' => '2026-10-26'])

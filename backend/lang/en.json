@@ -37,6 +37,7 @@
     "spreadsheet_unreadable": "The file cannot be read as an Excel spreadsheet.",
     "spreadsheet_no_items_table": "No items table (name, quantity and price columns) was found on the first sheet.",
     "spreadsheet_items_imported": "Material items added: :count.",
+    "spreadsheet_items_merged": "Added: :added, changed: :updated, unchanged: :unchanged.",
     "attribute_spreadsheet_files": "Excel files",
     "attribute_spreadsheet_file": "Excel file",
     "attribute_items_date": "items date",

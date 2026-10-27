@@ -5,21 +5,23 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { FileSpreadsheetIcon, PlusIcon } from 'lucide-react'
 import { Alert, AlertDescription } from '@app/ui/components/alert'
+import { Badge } from '@app/ui/components/badge'
 import { Button } from '@app/ui/components/button'
 import { Checkbox } from '@app/ui/components/checkbox'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@app/ui/components/dialog'
 import { DatePickerField } from '@app/ui/components/fields'
 import { Input } from '@app/ui/components/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@app/ui/components/select'
 import { cn } from '@app/ui/lib/utils'
 import { getApiErrorMessage } from '#/lib/api-error'
-import { todayIso } from '#/lib/format'
+import { formatDay, todayIso } from '#/lib/format'
 import { logger } from '#/lib/logger'
 import { formatAmount, formatQuantity } from '#/lib/money'
 import { Currency } from '#/types/money'
 import { importSpreadsheetItems, readSpreadsheets } from '../api/sites.api'
 import { useInvalidateMoney } from '../api/use-site-mutation'
-import { importPayload, isRowValid, lineCents, rowsFromFiles, selectedTotal } from '../lib/spreadsheet-import'
-import type { SpreadsheetRow } from '../lib/spreadsheet-import'
+import { groupsFromFiles, importPayload, isRowValid, lineCents, rowMatch, rowsFromFiles, selectedTotal } from '../lib/spreadsheet-import'
+import type { RowStatus, SpreadsheetGroup, SpreadsheetRow } from '../lib/spreadsheet-import'
 import type { Site } from '../types'
 
 const ACCEPT = '.xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -28,6 +30,12 @@ interface Props {
   site: Site
   open: boolean
   onOpenChange: (open: boolean) => void
+}
+
+const STATUS_BADGE: Record<RowStatus, string> = {
+  same: 'border-transparent bg-muted text-muted-foreground',
+  changed: 'border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-200',
+  new: 'border-primary bg-primary/15 text-foreground',
 }
 
 /** Uzastopni redovi jednog fajla, redom kojim su fajlovi pročitani. */
@@ -44,13 +52,17 @@ function groupsOf(rows: SpreadsheetRow[]): SpreadsheetRow[][] {
 /**
  * Materijal iz Excel fajlova prodavnice: izbor jednog ili više fajlova, pregled pročitanog
  * (cena iz fajla ide investitoru), pa dodavanje ostavljenih redova kao materijala sa
- * procenjenom nabavnom cenom.
+ * procenjenom nabavnom cenom. Fajl koji liči na raniji uvoz nudi se kao njegova nova verzija:
+ * iste stavke se preskaču, izmenjene se menjaju, nove se dodaju.
  */
 export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
   const { t } = useTranslation()
   const invalidate = useInvalidateMoney()
   const inputRef = useRef<HTMLInputElement>(null)
   const [rows, setRows] = useState<SpreadsheetRow[]>([])
+  const [groups, setGroups] = useState<SpreadsheetGroup[]>([])
+  // Za svaki fajl: raniji uvoz čija je nova verzija (null = nov dokument).
+  const [targets, setTargets] = useState<ReadonlyMap<number, number | null>>(() => new Map())
   const [problems, setProblems] = useState<Array<{ file: string; error: string }>>([])
   const [filesRead, setFilesRead] = useState(0)
   const [day, setDay] = useState(todayIso())
@@ -58,7 +70,10 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
   const readMutation = useMutation({
     mutationFn: (files: File[]) => readSpreadsheets(site.id, files),
     onSuccess: (data) => {
+      const read = groupsFromFiles(data.files, filesRead)
       setRows((current) => [...current, ...rowsFromFiles(data.files, filesRead)])
+      setGroups((current) => [...current, ...read])
+      setTargets((current) => new Map([...current, ...read.map((group) => [group.group, group.suggested] as const)]))
       setProblems((current) => [
         ...current,
         ...data.files.flatMap((file) => (file.error ? [{ file: file.name, error: file.error }] : [])),
@@ -72,7 +87,7 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
   })
 
   const importMutation = useMutation({
-    mutationFn: () => importSpreadsheetItems(site.id, importPayload(rows, day)),
+    mutationFn: () => importSpreadsheetItems(site.id, importPayload(rows, day, targets)),
     onSuccess: (response) => {
       toast.success(response.message)
       invalidate()
@@ -99,7 +114,12 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
   const update = (key: string, patch: Partial<SpreadsheetRow>) =>
     setRows((current) => current.map((row) => (row.key === key ? { ...row, ...patch } : row)))
 
+  const groupOf = (row: SpreadsheetRow) => groups.find((group) => group.group === row.group)
+  const statusOf = (row: SpreadsheetRow) => rowMatch(row, groupOf(row), targets.get(row.group) ?? null)
+
   const selected = rows.filter((row) => row.selected)
+  // Iste stavke iz ranijeg uvoza se preskaču, pa se ne broje u ono što će se upisati.
+  const toSave = selected.filter((row) => statusOf(row).status !== 'same')
   const hasInvalid = selected.some((row) => !isRowValid(row))
   const allSelected = rows.length > 0 && rows.every((row) => row.selected)
   const nothingRead = filesRead > 0 && rows.length === 0
@@ -157,19 +177,60 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
               </label>
             </div>
 
-            {groupsOf(rows).map((group) => (
-              <section key={group[0]?.group} className="space-y-1.5">
+            {groupsOf(rows).map((group) => {
+              const meta = groupOf(group[0])
+              const target = targets.get(group[0].group) ?? null
+              const candidate = meta?.candidates.find((option) => option.import_id === target)
+              return (
+              <section key={group[0].group} className="space-y-1.5">
                 <h3 className="flex items-center gap-2 text-sm font-medium">
                   <FileSpreadsheetIcon className="size-4 text-brand-deep" />
-                  <span className="truncate">{group[0]?.file}</span>
+                  <span className="truncate">{group[0].file}</span>
                   <span className="shrink-0 text-xs font-normal text-muted-foreground">{t('items.import.fileItems', { count: group.length })}</span>
                 </h3>
+                {meta && meta.candidates.length > 0 && (
+                  <div className="space-y-1">
+                    <Select
+                      value={target === null ? 'new' : String(target)}
+                      onValueChange={(value) =>
+                        setTargets((current) => new Map(current).set(group[0].group, value === 'new' ? null : Number(value)))
+                      }
+                    >
+                      <SelectTrigger size="sm" className="w-full" aria-label={t('items.import.versionOf')}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="new">{t('items.import.asNew')}</SelectItem>
+                        {meta.candidates.map((option) => (
+                          <SelectItem key={option.import_id} value={String(option.import_id)}>
+                            {t('items.import.asVersion', {
+                              file: option.file_name,
+                              date: formatDay(option.created_at.slice(0, 10)),
+                              same: option.same,
+                              changed: option.changed,
+                            })}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {candidate && (
+                      <p className="text-xs text-muted-foreground">
+                        {t('items.import.versionSummary', { same: candidate.same, changed: candidate.changed, new: candidate.new })}
+                        {candidate.missing > 0 && ` · ${t('items.import.versionMissing', { count: candidate.missing })}`}
+                      </p>
+                    )}
+                  </div>
+                )}
                 <ul className="divide-y rounded-md border">
                   {group.map((row) => {
                     const cents = lineCents(row)
                     const invalid = row.selected && !isRowValid(row)
+                    const match = statusOf(row)
                     return (
-                      <li key={row.key} className={cn('grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 p-2.5', !row.selected && 'opacity-60')}>
+                      <li
+                        key={row.key}
+                        className={cn('grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 p-2.5', (!row.selected || match.status === 'same') && 'opacity-60')}
+                      >
                         <Checkbox
                           checked={row.selected}
                           onCheckedChange={(value) => update(row.key, { selected: value === true })}
@@ -177,12 +238,28 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
                           className="mt-2"
                         />
                         <div className="min-w-0 space-y-1.5">
-                          <Input
-                            value={row.name}
-                            onChange={(event) => update(row.key, { name: event.target.value })}
-                            aria-invalid={invalid && row.name.trim() === ''}
-                            className="h-8"
-                          />
+                          <div className="flex items-center gap-2">
+                            <Input
+                              value={row.name}
+                              onChange={(event) => update(row.key, { name: event.target.value })}
+                              aria-invalid={invalid && row.name.trim() === ''}
+                              className="h-8"
+                            />
+                            {candidate && (
+                              <Badge variant="outline" className={cn('shrink-0 text-[0.65rem]', STATUS_BADGE[match.status])}>
+                                {t(`items.import.status.${match.status}`)}
+                              </Badge>
+                            )}
+                          </div>
+                          {match.previous && (
+                            <p className="text-xs text-muted-foreground tabular-nums">
+                              {t('items.import.previous', {
+                                quantity: formatQuantity(match.previous.quantity),
+                                unit: match.previous.unit,
+                                price: formatAmount(match.previous.sale_price, Currency.RSD),
+                              })}
+                            </p>
+                          )}
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground tabular-nums">
                             <span>
                               {formatQuantity(row.quantity)} {row.unit} ×
@@ -208,7 +285,8 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
                   })}
                 </ul>
               </section>
-            ))}
+              )
+            })}
 
             {hasInvalid && <p className="text-sm text-destructive">{t('items.import.invalid')}</p>}
           </div>
@@ -228,9 +306,9 @@ export function SpreadsheetImportDialog({ site, open, onOpenChange }: Props) {
             </Button>
             <Button
               onClick={() => importMutation.mutate()}
-              disabled={selected.length === 0 || hasInvalid || importMutation.isPending || readMutation.isPending}
+              disabled={toSave.length === 0 || hasInvalid || importMutation.isPending || readMutation.isPending}
             >
-              {importMutation.isPending ? t('items.import.importing') : t('items.import.submit', { count: selected.length })}
+              {importMutation.isPending ? t('items.import.importing') : t('items.import.submit', { count: toSave.length })}
             </Button>
           </div>
         </DialogFooter>

@@ -10,42 +10,6 @@ use Laravel\Sanctum\Sanctum;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-/**
- * Excel kakav salje prodavnica: zaglavlje radnje, tabela od 19. reda sa formulom za ukupno
- * po redu, zbirni red "UKUPNO:" i napomene ispod; na drugom listu je nesto sto se ne uvozi.
- *
- * @param array<int, array{0: string, 1: string, 2: int|float, 3: int|float}> $rows
- */
-function storeSpreadsheetFile(array $rows, string $format = 'Xls', string $name = 'ponuda.xls'): UploadedFile
-{
-    $book = new Spreadsheet();
-    $sheet = $book->getActiveSheet()->setTitle('Sheet1');
-    $sheet->setCellValue('D2', 'Radnja za trgovinsku delatnost i postavljanje elektricnih instalacija');
-    $sheet->setCellValue('F9', 'Naziv:');
-    $sheet->setCellValue('G9', 'Kupac Probni');
-    $sheet->setCellValue('B10', 'Datum prometa dobara:');
-    $sheet->setCellValue('C10', 'Nis 29.06.2026.');
-    $sheet->fromArray(['Red.br.', 'Vrsta dobra-usluge', 'Jed. Mere', 'Kolicina', 'Cena', 'Stopa PDV', 'Osnovica PDV', 'Obračunat PDV', 'Ukupna naknada'], null, 'A19');
-
-    $row = 20;
-    foreach ($rows as $index => [$item, $unit, $quantity, $price]) {
-        $sheet->fromArray([($index + 1) . '.', $item, $unit, $quantity, $price, 0.2], null, "A{$row}");
-        $sheet->setCellValue("I{$row}", "=SUM(D{$row}*E{$row})");
-        $row++;
-    }
-
-    $sheet->setCellValue("A{$row}", 'UKUPNO:');
-    $sheet->setCellValue("I{$row}", '=SUM(I20:I' . ($row - 1) . ')');
-    $sheet->setCellValue('B' . ($row + 2), 'Napomena o poreskom oslobodjenju:');
-    $sheet->setCellValue('B' . ($row + 6), 'Robu primio:____________________Br.lk._____________');
-    $book->createSheet()->setTitle('Sheet2')->fromArray([['Naziv', 'Kolicina', 'Cena'], ['Ne sme da se uveze', 5, 100]]);
-
-    $path = tempnam(sys_get_temp_dir(), 'excel');
-    IOFactory::createWriter($book, $format)->save($path);
-
-    return new UploadedFile($path, $name, null, null, true);
-}
-
 beforeEach(function () {
     Sanctum::actingAs(plainAdmin());
     $this->site = Site::factory()->create(['currency' => Currency::EUR]);

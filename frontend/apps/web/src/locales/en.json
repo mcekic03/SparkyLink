@@ -296,12 +296,23 @@
       "price": "Price for the investor",
       "fileItems": "items: {{count}}",
       "selected": "Selected: {{count}} · total {{total}}",
-      "submit": "Add items ({{count}})",
+      "submit": "Import ({{count}})",
       "importing": "Adding...",
       "invalid": "Check the name and the price in the selected rows.",
       "empty": "The chosen files contain no items.",
       "readFailed": "Reading the files failed.",
-      "saveFailed": "Adding the items failed."
+      "saveFailed": "Adding the items failed.",
+      "versionOf": "Is this a new version of an earlier import",
+      "asNew": "New document – everything is added",
+      "asVersion": "New version: {{file}} · {{date}} (same {{same}}, changed {{changed}})",
+      "versionSummary": "Same: {{same}} (skipped) · changed: {{changed}} · new: {{new}}",
+      "versionMissing": "from the earlier import, not here: {{count}} (they stay as they are)",
+      "status": {
+        "same": "already there",
+        "changed": "changed",
+        "new": "new"
+      },
+      "previous": "before: {{quantity}} {{unit}} × {{price}}"
     },
     "all": "All",
     "filters": {

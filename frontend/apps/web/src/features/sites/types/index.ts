@@ -262,6 +262,26 @@ export const spreadsheetItemSchema = z.object({
 
 export type SpreadsheetItem = z.infer<typeof spreadsheetItemSchema>
 
+/** Raniji uvoz sa kojim fajl deli stavke: šta bi bilo isto, izmenjeno i novo, red po red. */
+export const spreadsheetCandidateSchema = z.object({
+  import_id: z.number(),
+  file_name: z.string(),
+  created_at: z.string(),
+  same: z.number(),
+  changed: z.number(),
+  new: z.number(),
+  missing: z.number(),
+  rows: z.array(
+    z.object({
+      status: z.enum(['same', 'changed', 'new']),
+      item_id: z.number().nullable(),
+      previous: z.object({ quantity: z.string(), unit: z.string(), sale_price: z.string() }).nullable(),
+    }),
+  ),
+})
+
+export type SpreadsheetCandidate = z.infer<typeof spreadsheetCandidateSchema>
+
 /** Šta je dao svaki poslati fajl: njegove stavke ili razlog zašto nijedna nije pročitana. */
 export const spreadsheetPreviewSchema = z.object({
   files: z.array(
@@ -269,6 +289,9 @@ export const spreadsheetPreviewSchema = z.object({
       name: z.string(),
       items: z.array(spreadsheetItemSchema),
       error: z.string().nullable(),
+      candidates: z.array(spreadsheetCandidateSchema),
+      /** Raniji uvoz čija je ovo verovatno nova verzija. */
+      suggested_import_id: z.number().nullable(),
     }),
   ),
 })
@@ -283,7 +306,12 @@ export type SpreadsheetFile = SpreadsheetPreview['files'][number]
  */
 export interface SpreadsheetImportPayload {
   occurred_at: string
-  files: Array<{ name: string; items: Array<{ name: string; unit: string; quantity: string; sale_price: string }> }>
+  files: Array<{
+    name: string
+    /** Raniji uvoz čija je ovo nova verzija; bez njega fajl je nov dokument. */
+    merge_into: number | null
+    items: Array<{ name: string; unit: string; quantity: string; sale_price: string }>
+  }>
 }
 
 /** Nabavna cena za izabrane stavke: procenat manje ili ukupno plaćeno u izabranoj valuti. */
