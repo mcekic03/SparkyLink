@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
 /**
- * Blade -> PDF preko Gotenberg servisa iz stack-a (Chromium). A4, margine u inčima.
+ * Blade -> PDF preko Gotenberg servisa iz stack-a (Chromium). A4 uspravno ili polozeno, margine u inčima.
  */
 class PdfRenderer
 {
@@ -15,7 +15,7 @@ class PdfRenderer
      *
      * @throws RuntimeException
      */
-    public function render(string $view, array $data): string
+    public function render(string $view, array $data, bool $landscape = false): string
     {
         $html = view($view, $data)->render();
         $url = rtrim((string) config('services.gotenberg.url'), '/') . '/forms/chromium/convert/html';
@@ -23,8 +23,8 @@ class PdfRenderer
         $response = Http::timeout(90)
                         ->attach('files', $html, 'index.html')
                         ->post($url, [
-                            'paperWidth' => '8.27',
-                            'paperHeight' => '11.69',
+                            'paperWidth' => $landscape ? '11.69' : '8.27',
+                            'paperHeight' => $landscape ? '8.27' : '11.69',
                             'marginTop' => '0.45',
                             'marginBottom' => '0.55',
                             'marginLeft' => '0.45',

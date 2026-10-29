@@ -14,7 +14,7 @@ const validResponse = {
   expires_in: 3600,
   data: {
     id: 1,
-    role_id: UserRole.Admin,
+    role_id: UserRole.SuperAdmin,
     name: 'Ada',
     email: 'ada@example.com',
     created_at: '2026-01-01T00:00:00Z',

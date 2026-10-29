@@ -13,7 +13,7 @@ use Laravel\Sanctum\Sanctum;
 
 test('the dashboard sums the period and lists who owes money', function () {
     rateFor(belgradeToday(), '117.0000');
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $site = Site::factory()->create(['name' => 'Kuća Petrović', 'currency' => Currency::EUR]);
     SiteItem::factory()->for($site)->create(['occurred_at' => '2026-03-10']);
@@ -54,8 +54,4 @@ test('the owner updates company data and the logo; a worker only sees the compan
     expect(Setting::defaultMarkupPercent())->toBe('25')
         ->and(Setting::logoPath())->toContain('branding');
 
-    Sanctum::actingAs(worker());
-    $settings = $this->getJson('/api/admin/settings')->assertOk()->json('data');
-    expect($settings)->toHaveKey('company_name')->not->toHaveKey('company_phone');
-    $this->putJson('/api/admin/settings', [Setting::COMPANY_NAME => 'X'])->assertNotFound();
 });

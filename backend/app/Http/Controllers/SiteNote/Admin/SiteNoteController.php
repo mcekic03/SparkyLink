@@ -8,7 +8,6 @@ use App\Http\Resources\SiteNoteResource;
 use App\Models\Site;
 use App\Models\SiteNote;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SiteNoteController extends Controller
 {
@@ -32,29 +31,15 @@ class SiteNoteController extends Controller
 
     public function update(SiteNoteRequest $request, SiteNote $note): JsonResponse
     {
-        $this->ensureCanModify($request, $note);
-
         $note->update($request->validated());
 
         return response()->success(message: __('note_updated'), data: new SiteNoteResource($note->load('user:id,name')));
     }
 
-    public function destroy(Request $request, SiteNote $note): JsonResponse
+    public function destroy(SiteNote $note): JsonResponse
     {
-        $this->ensureCanModify($request, $note);
-
         $note->delete();
 
         return response()->success(message: __('note_deleted'));
-    }
-
-    /**
-     * Tudju napomenu menja samo vlasnik/administrator; ostalima 404 (kao uloge u sablonu).
-     */
-    private function ensureCanModify(Request $request, SiteNote $note): void
-    {
-        $user = $request->user();
-
-        abort_unless($user->id === $note->user_id || $user->canViewFinances(), 404);
     }
 }

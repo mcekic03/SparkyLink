@@ -1,17 +1,9 @@
 import { z } from 'zod'
 
-/** Mirrors `App\Enums\Role` on the backend. */
+/** Mirrors `App\Enums\Role`: sistem ima jedan nalog, vlasnika. */
 export enum UserRole {
   SuperAdmin = 1,
-  Admin = 2,
-  Worker = 3,
 }
-
-/** Roles that see money: purchase prices, profit, payments, documents. */
-export const FINANCE_ROLES: ReadonlyArray<UserRole> = [
-  UserRole.SuperAdmin,
-  UserRole.Admin,
-]
 
 /** Unknown keys are stripped, so a new backend field cannot break a session. */
 export const userSchema = z.object({
@@ -28,8 +20,4 @@ export type User = z.infer<typeof userSchema>
 export function parseStoredUser(value: unknown): User | null {
   const result = userSchema.safeParse(value)
   return result.success ? result.data : null
-}
-
-export function canViewFinances(user: User | null | undefined): boolean {
-  return user !== null && user !== undefined && FINANCE_ROLES.includes(user.role_id)
 }

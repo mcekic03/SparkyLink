@@ -15,7 +15,7 @@ beforeEach(function () {
     Storage::fake('local');
     Http::fake(['gotenberg.test/*' => Http::response('%PDF-1.7 lazni', 200)]);
     rateFor('2026-10-26', '117.5000');
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $this->site = Site::factory()->create(['currency' => Currency::EUR]);
     SiteItem::factory()->for($this->site)->create(['name' => 'Kabl', 'occurred_at' => '2026-10-20']);

@@ -120,6 +120,11 @@ class Site extends Model
         return $this->hasMany(Document::class);
     }
 
+    public function fuseBoards(): HasMany
+    {
+        return $this->hasMany(FuseBoard::class);
+    }
+
     // ===== 3. Scopes =====
 
     public function scopeFilters(Builder|self $query): Builder|self

@@ -25,7 +25,7 @@ function estimatedMaterial(Site $site, string $name, string $quantity, string $s
 }
 
 beforeEach(function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
     rateFor('2026-10-20', '117.0000');
     $this->site = Site::factory()->create(['currency' => Currency::EUR]);
 });
@@ -95,11 +95,4 @@ test('only material and other costs of this site can get a purchase price, with 
     $this->postJson($url, ['item_ids' => [$service->id], 'percent' => '10'])->assertUnprocessable()->assertJsonValidationErrors(['item_ids']);
     $this->postJson($url, ['item_ids' => [$service->id]])->assertUnprocessable()->assertJsonValidationErrors(['percent', 'total']);
     $this->postJson($url, ['item_ids' => [$service->id], 'percent' => '150'])->assertUnprocessable()->assertJsonValidationErrors(['percent']);
-});
-
-test('a worker cannot set purchase prices', function () {
-    $item = estimatedMaterial($this->site, 'Dozna f60', '30', '15');
-    Sanctum::actingAs(worker());
-
-    $this->postJson("/api/admin/sites/{$this->site->id}/items/purchase-prices", ['item_ids' => [$item->id], 'percent' => '10'])->assertNotFound();
 });

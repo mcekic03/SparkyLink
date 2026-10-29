@@ -6,20 +6,20 @@
 
 ## Zadaci
 
-- [ ] 1. Docker stek: `docker-compose.yml` (prod), `docker-compose.override.yml` (lokalni Traefik, portovi, alati), Dockerfile-ovi, nginx, MySQL init, backup.
-- [ ] 2. Backend osnova: čišćenje šablona, uloge 1–3, podešavanja, prevodi, Pest zelen.
-- [ ] 3. Kurs (`exchange_rates`, preuzimanje, komanda, ruta) + testovi.
-- [ ] 4. Gradilišta + napomene + testovi (pretraga, filter, soft delete, radnik bez iznosa).
-- [ ] 5. Stavke + cenovnik + predlozi + testovi (oba iznosa, zarez u decimalama, kurs).
-- [ ] 6. Rad radnika + uplate + sažetak gradilišta + testovi (dug u valuti obračuna).
-- [ ] 7. Obračun (snimak + PDF preko Gotenberga) + testovi.
-- [ ] 8. Fiskalni računi (preuzimanje sa suf.purs.gov.rs, pregled, uvoz, duplikat, ručni, kopija PDF, ponovni pokušaj) + testovi.
-- [ ] 9. Slike i video (otpremanje, sličice, potpisani linkovi) + testovi.
-- [ ] 10. Pregled (analitika) + podešavanja i logo + testovi.
-- [ ] 11. Frontend osnova: čišćenje šablona, isti domen za API, uloge, navigacija, prevodi.
-- [ ] 12. Frontend ekrani: gradilišta, stavke, rad, uplate, obračuni, računi i skener, mediji, napomene, cenovnik, pregled, podešavanja, korisnici; PWA.
-- [ ] 13. Ceo stek lokalno + pristup sa telefona + probni podaci + provera u pregledaču.
-- [ ] 14. README, DEPLOYMENT, `docs/API.md`, `CLAUDE.md`; završni pregled koda.
+- [x] 1. Docker stek: `docker-compose.yml` (prod), `docker-compose.override.yml` (lokalni Traefik, portovi, alati), Dockerfile-ovi, nginx, MySQL init, backup.
+- [x] 2. Backend osnova: čišćenje šablona, uloge 1–3, podešavanja, prevodi, Pest zelen.
+- [x] 3. Kurs (`exchange_rates`, preuzimanje, komanda, ruta) + testovi.
+- [x] 4. Gradilišta + napomene + testovi (pretraga, filter, soft delete, radnik bez iznosa).
+- [x] 5. Stavke + cenovnik + predlozi + testovi (oba iznosa, zarez u decimalama, kurs).
+- [x] 6. Rad radnika + uplate + sažetak gradilišta + testovi (dug u valuti obračuna).
+- [x] 7. Obračun (snimak + PDF preko Gotenberga) + testovi.
+- [x] 8. Fiskalni računi (preuzimanje sa suf.purs.gov.rs, pregled, uvoz, duplikat, ručni, kopija PDF, ponovni pokušaj) + testovi.
+- [x] 9. Slike i video (otpremanje, sličice, potpisani linkovi) + testovi.
+- [x] 10. Pregled (analitika) + podešavanja i logo + testovi.
+- [x] 11. Frontend osnova: čišćenje šablona, isti domen za API, uloge, navigacija, prevodi.
+- [x] 12. Frontend ekrani: gradilišta, stavke, rad, uplate, obračuni, računi i skener, mediji, napomene, cenovnik, pregled, podešavanja, korisnici; PWA.
+- [x] 13. Ceo stek lokalno + pristup sa telefona + probni podaci + provera u pregledaču.
+- [x] 14. README, DEPLOYMENT, `docs/API.md`, `CLAUDE.md`; završni pregled koda.
 
 ## Na šta posebno paziti
 

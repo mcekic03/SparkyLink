@@ -48,7 +48,6 @@
     "receipts": "Receipts & warranties",
     "priceList": "Price list",
     "settings": "Settings",
-    "users": "Users",
     "workspace": "Cekić Elektrik",
     "commandPalette": {
       "title": "Command palette",
@@ -208,7 +207,8 @@
         "documents": "Offers & invoices",
         "receipts": "Fiscal receipts",
         "media": "Photos & video",
-        "notes": "Notes"
+        "notes": "Notes",
+        "fuses": "Fuse layout"
       }
     }
   },
@@ -474,6 +474,57 @@
       "failed": "Deleting the document failed."
     }
   },
+  "fuseBoards": {
+    "title": "Fuse layout",
+    "description": "For every board a list of fuses: what it supplies, rating and type. The PDF is made when you open it, from the saved layout.",
+    "newBoard": "New board",
+    "empty": "No boards yet. Add the first one, e.g. “Distribution board – ground floor”.",
+    "loadFailed": "Loading the fuse layout failed",
+    "rename": "Rename",
+    "save": "Save layout",
+    "reset": "Discard changes",
+    "saveFailed": "Saving the layout failed.",
+    "delete": {
+      "action": "Delete board",
+      "confirm": "Delete the board and all its fuses?",
+      "failed": "Deleting the board failed."
+    },
+    "form": {
+      "newTitle": "New board",
+      "renameTitle": "Board name",
+      "hint": "The cabinet name, as it will appear on the PDF.",
+      "name": "Board name",
+      "namePlaceholder": "e.g. Distribution board – ground floor",
+      "nameRequired": "Enter the board name.",
+      "nameTooLong": "The name is too long.",
+      "submit": "Save"
+    },
+    "fuses": {
+      "name": "Supplies",
+      "namePlaceholder": "e.g. Lights – living room",
+      "rating": "Rating",
+      "type": "Type",
+      "add": "Add fuse",
+      "empty": "This board has no fuses yet. Add the first one, numbers follow by themselves.",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "remove": "Remove fuse",
+      "count": "Fuses: {{count}}",
+      "unnamed": "Enter what fuse no. {{numbers}} supplies."
+    },
+    "pdf": {
+      "title": "PDF",
+      "hint": "Hover over a button to see the layout. The PDF opens in a new window, where you can print or save it.",
+      "unsaved": "Save the changes, then open the PDF.",
+      "noFuses": "Add and save fuses, then open the PDF."
+    },
+    "templates": {
+      "1": "Table",
+      "2": "Board diagram",
+      "3": "Cards",
+      "4": "Technical drawing"
+    }
+  },
   "receipts": {
     "title": "Receipts & warranties",
     "description": "All fiscal receipts from the sites. Find a receipt and print a copy for a warranty claim.",
@@ -648,61 +699,6 @@
       "save": "Save rate",
       "failed": "Saving the rate failed.",
       "empty": "No rates fetched yet."
-    }
-  },
-  "users": {
-    "title": "Users",
-    "description": "Accounts with access to the app. A worker sees sites, photos, notes and receipts, but no money.",
-    "loadFailed": "Loading users failed",
-    "empty": "No users found.",
-    "columns": {
-      "name": "Name",
-      "email": "Email",
-      "role": "Role",
-      "createdAt": "Created"
-    },
-    "roles": {
-      "1": "Super administrator",
-      "2": "Administrator",
-      "3": "Worker"
-    },
-    "edit": {
-      "title": "Edit user",
-      "description": "Update details for {{name}}.",
-      "loadFailed": "Loading the user failed",
-      "updateFailed": "Updating the user failed.",
-      "invalidRole": "Choose a valid role.",
-      "namePlaceholder": "Full name",
-      "passwordHint": "Leave empty to keep the current one",
-      "confirmPassword": "Confirm password",
-      "repeatPassword": "Repeat the new password",
-      "selectRole": "Choose a role"
-    },
-    "create": {
-      "action": "New user",
-      "title": "New user",
-      "description": "An administrator sees everything except users and settings; a worker sees no amounts or profit.",
-      "submit": "Create account",
-      "passwordHint": "At least 8 characters, upper and lower case letters and a symbol.",
-      "failed": "Creating the account failed.",
-      "errors": {
-        "name": "Enter a name.",
-        "email": "Enter a valid email.",
-        "password": "The password must have at least 8 characters.",
-        "passwordMatch": "The passwords do not match."
-      }
-    },
-    "allRoles": "All roles",
-    "searchPlaceholder": "Search",
-    "delete": {
-      "action": "Delete user",
-      "pending": "Deleting...",
-      "failed": "Deleting the user failed.",
-      "confirm": "Delete user {{name}}? This cannot be undone.",
-      "selected": "Delete selected",
-      "confirmSelected": "Delete the selected users? This cannot be undone.",
-      "selectedSuccess": "The selected users were deleted.",
-      "selectedFailed": "Deleting the selected users failed."
     }
   },
   "table": {

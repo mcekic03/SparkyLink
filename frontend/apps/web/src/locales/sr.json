@@ -48,7 +48,6 @@
     "receipts": "Računi i garancije",
     "priceList": "Cenovnik",
     "settings": "Podešavanja",
-    "users": "Korisnici",
     "workspace": "Cekić Elektrik",
     "commandPalette": {
       "title": "Komandna paleta",
@@ -206,6 +205,7 @@
         "labor": "Radnici",
         "payments": "Uplate",
         "documents": "Ponude i računi",
+        "fuses": "Raspored osigurača",
         "receipts": "Fiskalni računi",
         "media": "Slike i video",
         "notes": "Napomene"
@@ -474,6 +474,57 @@
       "failed": "Brisanje dokumenta nije uspelo."
     }
   },
+  "fuseBoards": {
+    "title": "Raspored osigurača",
+    "description": "Za svaku tablu spisak osigurača: šta napaja, jačina i tip. PDF se pravi kad ga otvoriš, od sačuvanog rasporeda.",
+    "newBoard": "Nova tabla",
+    "empty": "Još nema nijedne table. Dodaj prvu, npr. „Razvodni ormar – prizemlje“.",
+    "loadFailed": "Učitavanje rasporeda osigurača nije uspelo",
+    "rename": "Preimenuj",
+    "save": "Sačuvaj raspored",
+    "reset": "Poništi izmene",
+    "saveFailed": "Čuvanje rasporeda nije uspelo.",
+    "delete": {
+      "action": "Obriši tablu",
+      "confirm": "Obrisati tablu i sve njene osigurače?",
+      "failed": "Brisanje table nije uspelo."
+    },
+    "form": {
+      "newTitle": "Nova tabla",
+      "renameTitle": "Naziv table",
+      "hint": "Naziv ormara, kako će pisati na PDF-u.",
+      "name": "Naziv table",
+      "namePlaceholder": "npr. Razvodni ormar – prizemlje",
+      "nameRequired": "Upiši naziv table.",
+      "nameTooLong": "Naziv je predugačak.",
+      "submit": "Sačuvaj"
+    },
+    "fuses": {
+      "name": "Šta napaja",
+      "namePlaceholder": "npr. Rasveta – dnevna soba",
+      "rating": "Jačina",
+      "type": "Tip",
+      "add": "Dodaj osigurač",
+      "empty": "Na ovoj tabli još nema osigurača. Dodaj prvi, redni brojevi idu sami.",
+      "moveUp": "Pomeri gore",
+      "moveDown": "Pomeri dole",
+      "remove": "Ukloni osigurač",
+      "count": "Osigurača: {{count}}",
+      "unnamed": "Upiši šta napaja osigurač br. {{numbers}}."
+    },
+    "pdf": {
+      "title": "PDF",
+      "hint": "Pređi mišem preko dugmeta da vidiš izgled. PDF se otvara u novom prozoru, odakle ga štampaš ili čuvaš.",
+      "unsaved": "Sačuvaj izmene, pa otvori PDF.",
+      "noFuses": "Dodaj i sačuvaj osigurače, pa otvori PDF."
+    },
+    "templates": {
+      "1": "Tabela",
+      "2": "Šema table",
+      "3": "Kartice",
+      "4": "Tehnički crtež"
+    }
+  },
   "receipts": {
     "title": "Računi i garancije",
     "description": "Svi fiskalni računi sa gradilišta. Pronađite račun i odštampajte kopiju za garanciju.",
@@ -648,61 +699,6 @@
       "save": "Sačuvaj kurs",
       "failed": "Čuvanje kursa nije uspelo.",
       "empty": "Još nema preuzetih kurseva."
-    }
-  },
-  "users": {
-    "title": "Korisnici",
-    "description": "Nalozi sa pristupom aplikaciji. Radnik vidi gradilišta, slike, napomene i račune, ali ne i novac.",
-    "loadFailed": "Učitavanje korisnika nije uspelo",
-    "empty": "Nema pronađenih korisnika.",
-    "columns": {
-      "name": "Ime",
-      "email": "Email",
-      "role": "Uloga",
-      "createdAt": "Kreiran"
-    },
-    "roles": {
-      "1": "Super administrator",
-      "2": "Administrator",
-      "3": "Radnik"
-    },
-    "edit": {
-      "title": "Izmena korisnika",
-      "description": "Ažurirajte podatke za {{name}}.",
-      "loadFailed": "Učitavanje korisnika nije uspelo",
-      "updateFailed": "Ažuriranje korisnika nije uspelo.",
-      "invalidRole": "Izaberite važeću ulogu.",
-      "namePlaceholder": "Ime i prezime",
-      "passwordHint": "Ostavite prazno da zadržite trenutnu",
-      "confirmPassword": "Potvrdite lozinku",
-      "repeatPassword": "Ponovite novu lozinku",
-      "selectRole": "Izaberite ulogu"
-    },
-    "create": {
-      "action": "Novi korisnik",
-      "title": "Novi korisnik",
-      "description": "Administrator vidi sve osim korisnika i podešavanja; radnik ne vidi iznose ni zaradu.",
-      "submit": "Kreiraj nalog",
-      "passwordHint": "Najmanje 8 znakova, velika i mala slova i simbol.",
-      "failed": "Kreiranje naloga nije uspelo.",
-      "errors": {
-        "name": "Unesite ime.",
-        "email": "Unesite ispravan mejl.",
-        "password": "Lozinka mora imati najmanje 8 znakova.",
-        "passwordMatch": "Lozinke se ne poklapaju."
-      }
-    },
-    "allRoles": "Sve uloge",
-    "searchPlaceholder": "Pretraga",
-    "delete": {
-      "action": "Obriši korisnika",
-      "pending": "Brisanje...",
-      "failed": "Brisanje korisnika nije uspelo.",
-      "confirm": "Obrisati korisnika {{name}}? Ova radnja se ne može poništiti.",
-      "selected": "Obriši izabrane",
-      "confirmSelected": "Obrisati izabrane korisnike? Ova radnja se ne može poništiti.",
-      "selectedSuccess": "Izabrani korisnici su obrisani.",
-      "selectedFailed": "Brisanje izabranih korisnika nije uspelo."
     }
   },
   "table": {

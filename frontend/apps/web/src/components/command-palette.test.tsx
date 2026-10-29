@@ -26,7 +26,6 @@ const ADMIN: User = {
   created_at: '2024-01-01',
 }
 
-const PLAIN: User = { ...ADMIN, id: 2, role_id: UserRole.Admin }
 
 /**
  * A stand-in tree — the app's root pulls in devtools and a full layout. That
@@ -54,14 +53,21 @@ function renderPalette(user: User) {
     path: '/dashboard',
     component: () => null,
   })
-  const users = createRoute({
+  const settings = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/users',
+    path: '/podesavanja',
     staticData: { roles: [UserRole.SuperAdmin] },
     component: () => null,
   })
+  // Prazan spisak uloga ne pušta nikoga, pa ova stranica ne sme da se ponudi.
+  const priceList = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/cenovnik',
+    staticData: { roles: [] },
+    component: () => null,
+  })
   const router = createRouter({
-    routeTree: rootRoute.addChildren([index, dashboard, users]),
+    routeTree: rootRoute.addChildren([index, dashboard, settings, priceList]),
     history: createMemoryHistory({ initialEntries: ['/'] }),
   })
 
@@ -91,18 +97,18 @@ describe('command palette', () => {
       await screen.findByPlaceholderText('Type to search...'),
     ).toBeVisible()
     expect(screen.getByRole('option', { name: /Overview/ })).toBeVisible()
-    expect(screen.getByRole('option', { name: /Users/ })).toBeVisible()
+    expect(screen.getByRole('option', { name: /Settings/ })).toBeVisible()
   })
 
   it('omits destinations the role would be bounced from', async () => {
-    await renderPalette(PLAIN)
+    await renderPalette(ADMIN)
 
     await userEvent.keyboard('{Control>}k{/Control}')
 
     expect(
       await screen.findByRole('option', { name: /Overview/ }),
     ).toBeVisible()
-    expect(screen.queryByRole('option', { name: /Users/ })).toBeNull()
+    expect(screen.queryByRole('option', { name: /Price list/ })).toBeNull()
   })
 
   it('ignores k without a modifier, which is just typing', async () => {

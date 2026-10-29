@@ -10,16 +10,15 @@ import { Button } from '@app/ui/components/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@app/ui/components/tabs'
 import { ConfirmBubble } from '#/components/confirm-bubble'
 import { QueryError } from '#/components/query-error'
-import { useAuth } from '#/lib/auth-context'
 import { getApiErrorMessage } from '#/lib/api-error'
 import { formatDay } from '#/lib/format'
 import { logger } from '#/lib/logger'
 import { logOnFail } from '#/lib/log-on-fail'
 import { MONEY_DEPENDENT_KEYS } from '#/lib/query-keys'
-import { canViewFinances } from '#/types/user'
 import { deleteSite, fetchSite, restoreSite } from '../api/sites.api'
 import { sitesKeys } from '../api/sites.keys'
 import { DocumentsTab } from '../components/documents-tab'
+import { FuseBoardsTab } from '../components/fuse-boards-tab'
 import { ItemsTab } from '../components/items-tab'
 import { LaborTab } from '../components/labor-tab'
 import { MediaTab } from '../components/media-tab'
@@ -35,16 +34,11 @@ import type { Site } from '../types'
 
 const routeApi = getRouteApi('/_authed/gradilista/$siteId/')
 
-/** A worker sees the site, its receipts, photos and notes — never money. */
-const WORKER_TABS: ReadonlyArray<SiteTab> = ['overview', 'receipts', 'media', 'notes']
-
 export function SiteDetailPage() {
   const { t } = useTranslation()
   const { siteId } = routeApi.useParams()
   const { tab } = routeApi.useSearch()
   const navigate = useNavigate()
-  const { user } = useAuth()
-  const finances = canViewFinances(user)
   const id = Number(siteId)
 
   const { data: site, isError, error, refetch } = useQuery({
@@ -56,8 +50,7 @@ export function SiteDetailPage() {
     if (isError) logger.error({ err: error }, 'Failed to fetch site')
   }, [isError, error])
 
-  const tabs = finances ? SITE_TABS : WORKER_TABS
-  const activeTab: SiteTab = tab && tabs.includes(tab) ? tab : 'overview'
+  const activeTab: SiteTab = tab ?? 'overview'
 
   if (isError) {
     return (
@@ -75,7 +68,7 @@ export function SiteDetailPage() {
 
   return (
     <div className="min-w-0">
-      <SiteHeader site={site} canManage={finances} />
+      <SiteHeader site={site} />
       <Tabs
         value={activeTab}
         onValueChange={(value) =>
@@ -88,7 +81,7 @@ export function SiteDetailPage() {
       >
         <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
           <TabsList className="w-max">
-            {tabs.map((name) => (
+            {SITE_TABS.map((name) => (
               <TabsTrigger key={name} value={name}>
                 {t(`sites.detail.tabs.${name}`)}
               </TabsTrigger>
@@ -96,26 +89,25 @@ export function SiteDetailPage() {
           </TabsList>
         </div>
         <TabsContent value="overview" className="mt-4">
-          <Overview site={site} finances={finances} />
+          <Overview site={site} />
         </TabsContent>
-        {finances && (
-          <>
-            <TabsContent value="items" className="mt-4">
-              <ItemsTab site={site} />
-            </TabsContent>
-            <TabsContent value="labor" className="mt-4">
-              <LaborTab site={site} />
-            </TabsContent>
-            <TabsContent value="payments" className="mt-4">
-              <PaymentsTab site={site} />
-            </TabsContent>
-            <TabsContent value="documents" className="mt-4">
-              <DocumentsTab site={site} />
-            </TabsContent>
-          </>
-        )}
+        <TabsContent value="items" className="mt-4">
+          <ItemsTab site={site} />
+        </TabsContent>
+        <TabsContent value="labor" className="mt-4">
+          <LaborTab site={site} />
+        </TabsContent>
+        <TabsContent value="payments" className="mt-4">
+          <PaymentsTab site={site} />
+        </TabsContent>
+        <TabsContent value="documents" className="mt-4">
+          <DocumentsTab site={site} />
+        </TabsContent>
+        <TabsContent value="fuses" className="mt-4">
+          <FuseBoardsTab site={site} />
+        </TabsContent>
         <TabsContent value="receipts" className="mt-4">
-          <ReceiptsTab site={site} canManage={finances} />
+          <ReceiptsTab site={site} />
         </TabsContent>
         <TabsContent value="media" className="mt-4">
           <MediaTab site={site} />
@@ -128,7 +120,7 @@ export function SiteDetailPage() {
   )
 }
 
-function SiteHeader({ site, canManage }: { site: Site; canManage: boolean }) {
+function SiteHeader({ site }: { site: Site }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -172,11 +164,9 @@ function SiteHeader({ site, canManage }: { site: Site; canManage: boolean }) {
         <Alert variant="destructive">
           <AlertDescription className="flex flex-wrap items-center justify-between gap-2">
             {t('sites.detail.deleted')}
-            {canManage && (
-              <Button size="sm" variant="outline" onClick={() => restoreMutation.mutate()} disabled={restoreMutation.isPending}>
-                <RotateCcwIcon /> {t('sites.restore.action')}
-              </Button>
-            )}
+            <Button size="sm" variant="outline" onClick={() => restoreMutation.mutate()} disabled={restoreMutation.isPending}>
+              <RotateCcwIcon /> {t('sites.restore.action')}
+            </Button>
           </AlertDescription>
         </Alert>
       )}
@@ -206,7 +196,7 @@ function SiteHeader({ site, canManage }: { site: Site; canManage: boolean }) {
             )}
           </div>
         </div>
-        {canManage && !site.is_deleted && (
+        {!site.is_deleted && (
           <div className="flex gap-2">
             <Button asChild variant="outline" size="sm">
               <Link to="/gradilista/$siteId/izmena" params={{ siteId: String(site.id) }}>
@@ -225,12 +215,12 @@ function SiteHeader({ site, canManage }: { site: Site; canManage: boolean }) {
   )
 }
 
-function Overview({ site, finances }: { site: Site; finances: boolean }) {
+function Overview({ site }: { site: Site }) {
   const { t } = useTranslation()
 
   return (
     <div className="grid gap-4">
-      {finances && <SummaryPanel site={site} />}
+      <SummaryPanel site={site} />
       <div className="grid gap-4 md:grid-cols-2">
         <InfoCard title={t('sites.form.sectionInvestor')}>
           <InfoRow label={t('sites.form.investorName')} value={site.investor_name} />

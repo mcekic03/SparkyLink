@@ -8,7 +8,7 @@ use App\Models\SiteItem;
 use Laravel\Sanctum\Sanctum;
 
 test('profit, paid and the debt in the billing currency come out right', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
     rateFor('2026-10-20', '117.0000');
     rateFor(belgradeToday(), '117.0000');
     $site = Site::factory()->create(['currency' => Currency::EUR]);

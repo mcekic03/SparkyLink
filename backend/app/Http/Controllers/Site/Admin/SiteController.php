@@ -19,16 +19,11 @@ class SiteController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $canViewFinances = $request->user()->canViewFinances();
-
         $sites = Site::query()
-                     ->when($canViewFinances, fn ($query) => $query->withFinancials())
+                     ->withFinancials()
                      ->filters()
-                     ->when(
-                         $canViewFinances,
-                         fn ($query) => $query->wherePaymentStatus(PaymentStatus::tryFrom((int) $request->input('payment_status')))
-                     )
-                     ->when($canViewFinances && $request->boolean('trashed'), fn ($query) => $query->onlyTrashed())
+                     ->wherePaymentStatus(PaymentStatus::tryFrom((int) $request->input('payment_status')))
+                     ->when($request->boolean('trashed'), fn ($query) => $query->onlyTrashed())
                      ->paginate($request->integer('per_page', 15));
 
         return response()->success(
@@ -37,11 +32,9 @@ class SiteController extends Controller
         );
     }
 
-    public function show(Request $request, int $site): JsonResponse
+    public function show(int $site): JsonResponse
     {
-        $model = Site::query()
-                     ->when($request->user()->canViewFinances(), fn ($query) => $query->withTrashed()->withFinancials())
-                     ->findOrFail($site);
+        $model = Site::query()->withTrashed()->withFinancials()->findOrFail($site);
 
         return response()->success(data: new SiteResource($model));
     }

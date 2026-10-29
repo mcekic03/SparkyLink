@@ -13,7 +13,6 @@
 
 use App\Enums\Currency;
 use App\Enums\ExchangeRateSource;
-use App\Enums\Role;
 use App\Models\ExchangeRate;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
@@ -32,19 +31,12 @@ uses(
 |--------------------------------------------------------------------------
 */
 
+/**
+ * Jedini nalog u sistemu (vlasnik), pravi ga migracija.
+ */
 function superAdmin(): User
 {
     return User::query()->where('email', config('app.admin_email'))->firstOrFail();
-}
-
-function plainAdmin(): User
-{
-    return User::factory()->create(['role_id' => Role::ADMIN]);
-}
-
-function worker(): User
-{
-    return User::factory()->create(['role_id' => Role::WORKER]);
 }
 
 /**

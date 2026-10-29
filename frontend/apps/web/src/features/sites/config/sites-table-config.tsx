@@ -11,7 +11,7 @@ import { PaymentStatusBadge, SiteStatusBadge } from '../components/status-badges
 import { PaymentStatus, SiteStatus } from '../types'
 import type { Site } from '../types'
 
-export function sitesTableConfig(t: TFunction, canViewFinances: boolean): DataTableConfig<Site> {
+export function sitesTableConfig(t: TFunction): DataTableConfig<Site> {
   return {
     searchColumn: 'name',
     searchPlaceholder: t('sites.searchPlaceholder'),
@@ -29,25 +29,21 @@ export function sitesTableConfig(t: TFunction, canViewFinances: boolean): DataTa
           value: String(status),
         })),
       },
-      ...(canViewFinances
-        ? [
-            {
-              id: 'payment_status',
-              label: t('sites.filters.paymentStatus'),
-              type: 'select' as const,
-              key: 'payment_status',
-              options: [PaymentStatus.Unpaid, PaymentStatus.PartiallyPaid, PaymentStatus.Paid].map((status) => ({
-                label: t(`sites.paymentStatus.${status}`),
-                value: String(status),
-              })),
-            },
-          ]
-        : []),
+      {
+        id: 'payment_status',
+        label: t('sites.filters.paymentStatus'),
+        type: 'select' as const,
+        key: 'payment_status',
+        options: [PaymentStatus.Unpaid, PaymentStatus.PartiallyPaid, PaymentStatus.Paid].map((status) => ({
+          label: t(`sites.paymentStatus.${status}`),
+          value: String(status),
+        })),
+      },
     ],
   }
 }
 
-export function sitesColumns(t: TFunction, canViewFinances: boolean): ColumnDef<Site>[] {
+export function sitesColumns(t: TFunction): ColumnDef<Site>[] {
   const columns: ColumnDef<Site>[] = [
     {
       accessorKey: 'name',
@@ -95,33 +91,31 @@ export function sitesColumns(t: TFunction, canViewFinances: boolean): ColumnDef<
     },
   ]
 
-  if (canViewFinances) {
-    columns.push(
-      {
-        id: 'balance',
-        header: () => t('sites.columns.balance'),
-        meta: { className: 'text-right' },
-        cell: ({ row }) => {
-          const balance = row.original.financials?.balance
-          if (!balance || row.original.status === SiteStatus.Offer) return null
-          return (
-            <span className="inline-flex flex-col items-end leading-tight tabular-nums">
-              <span className="font-medium">{formatAmount(balance.amount, balance.currency)}</span>
-            </span>
-          )
-        },
+  columns.push(
+    {
+      id: 'balance',
+      header: () => t('sites.columns.balance'),
+      meta: { className: 'text-right' },
+      cell: ({ row }) => {
+        const balance = row.original.financials?.balance
+        if (!balance || row.original.status === SiteStatus.Offer) return null
+        return (
+          <span className="inline-flex flex-col items-end leading-tight tabular-nums">
+            <span className="font-medium">{formatAmount(balance.amount, balance.currency)}</span>
+          </span>
+        )
       },
-      {
-        id: 'profit',
-        header: () => t('sites.columns.profit'),
-        meta: { className: 'text-right' },
-        cell: ({ row }) =>
-          row.original.financials ? (
-            <DualAmount pair={row.original.financials.profit} primary={row.original.currency} signed className="items-end" />
-          ) : null,
-      },
-    )
-  }
+    },
+    {
+      id: 'profit',
+      header: () => t('sites.columns.profit'),
+      meta: { className: 'text-right' },
+      cell: ({ row }) =>
+        row.original.financials ? (
+          <DualAmount pair={row.original.financials.profit} primary={row.original.currency} signed className="items-end" />
+        ) : null,
+    },
+  )
 
   columns.push({
     accessorKey: 'started_at',

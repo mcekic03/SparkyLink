@@ -91,18 +91,16 @@ export function NotesTab({ site }: { site: Site }) {
                   <span>
                     {note.author ?? ''} · {formatDateTime(note.created_at)}
                   </span>
-                  {note.can_edit && (
-                    <span className="flex gap-1">
-                      <Button variant="ghost" size="icon-sm" onClick={() => setEditing({ id: note.id, body: note.body })} aria-label={t('common.edit')}>
-                        <PencilIcon />
+                  <span className="flex gap-1">
+                    <Button variant="ghost" size="icon-sm" onClick={() => setEditing({ id: note.id, body: note.body })} aria-label={t('common.edit')}>
+                      <PencilIcon />
+                    </Button>
+                    <ConfirmBubble message={t('notes.delete.confirm')} onConfirm={() => deleteMutation.mutate(note.id)}>
+                      <Button variant="ghost" size="icon-sm" className="hover:text-destructive" aria-label={t('common.delete')}>
+                        <Trash2Icon />
                       </Button>
-                      <ConfirmBubble message={t('notes.delete.confirm')} onConfirm={() => deleteMutation.mutate(note.id)}>
-                        <Button variant="ghost" size="icon-sm" className="hover:text-destructive" aria-label={t('common.delete')}>
-                          <Trash2Icon />
-                        </Button>
-                      </ConfirmBubble>
-                    </span>
-                  )}
+                    </ConfirmBubble>
+                  </span>
                 </div>
               </>
             )}

@@ -195,13 +195,11 @@ function MediaViewer({ media, onClose }: { media: SiteMedia; onClose: () => void
           </Button>
         </div>
         <DialogFooter>
-          {media.can_delete && (
-            <ConfirmBubble message={t('media.delete.confirm')} onConfirm={() => deleteMutation.mutate(media.id, { onSuccess: onClose })} side="top">
-              <Button variant="outline" className="text-destructive">
-                <Trash2Icon /> {t('common.delete')}
-              </Button>
-            </ConfirmBubble>
-          )}
+          <ConfirmBubble message={t('media.delete.confirm')} onConfirm={() => deleteMutation.mutate(media.id, { onSuccess: onClose })} side="top">
+            <Button variant="outline" className="text-destructive">
+              <Trash2Icon /> {t('common.delete')}
+            </Button>
+          </ConfirmBubble>
           <Button asChild variant="outline">
             <a href={media.url} target="_blank" rel="noreferrer">
               {t('common.open')}

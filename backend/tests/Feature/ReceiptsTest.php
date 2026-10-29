@@ -55,9 +55,9 @@ beforeEach(function () {
     $this->site = Site::factory()->create(['markup_percent' => '20']);
 });
 
-test('a worker scans a receipt: preview in latin with marked-up prices, then the chosen items become material', function () {
+test('a scanned receipt: preview in latin with marked-up prices, then the chosen items become material', function () {
     fakeFetcher();
-    Sanctum::actingAs(worker());
+    Sanctum::actingAs(superAdmin());
 
     $preview = $this->postJson("/api/admin/sites/{$this->site->id}/receipts/preview", ['qr_url' => RECEIPT_URL])
                     ->assertOk()->json('data');
@@ -87,7 +87,7 @@ test('a worker scans a receipt: preview in latin with marked-up prices, then the
 
 test('the same receipt cannot be imported twice', function () {
     fakeFetcher();
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $this->postJson("/api/admin/sites/{$this->site->id}/receipts", ['qr_url' => RECEIPT_URL, 'items' => []])->assertOk();
 
@@ -98,7 +98,7 @@ test('the same receipt cannot be imported twice', function () {
 
 test('only tax administration links are accepted', function () {
     fakeFetcher();
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $this->postJson("/api/admin/sites/{$this->site->id}/receipts/preview", ['qr_url' => 'https://example.com/v/?vl=abc'])
          ->assertUnprocessable()
@@ -107,7 +107,7 @@ test('only tax administration links are accepted', function () {
 
 test('when the tax site is down the receipt waits and is fetched later by the scheduler', function () {
     fakeFetcher(works: false);
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $preview = $this->postJson("/api/admin/sites/{$this->site->id}/receipts/preview", ['qr_url' => RECEIPT_URL])->assertOk()->json('data');
     expect($preview['fetched'])->toBeFalse();
@@ -131,7 +131,7 @@ test('when the tax site is down the receipt waits and is fetched later by the sc
 
 test('a receipt without a qr code is kept as a photo and its copy is a signed pdf', function () {
     Http::fake(['gotenberg.test/*' => Http::response('%PDF-1.7 lazni', 200)]);
-    Sanctum::actingAs(worker());
+    Sanctum::actingAs(superAdmin());
 
     $receipt = $this->post("/api/admin/sites/{$this->site->id}/receipts", [
         'photo' => UploadedFile::fake()->image('racun.jpg', 800, 1600),
@@ -144,7 +144,7 @@ test('a receipt without a qr code is kept as a photo and its copy is a signed pd
 
 test('deleting a receipt also removes the items imported from it, and search finds receipts by text', function () {
     fakeFetcher();
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $this->postJson("/api/admin/sites/{$this->site->id}/receipts", [
         'qr_url' => RECEIPT_URL,

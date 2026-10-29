@@ -42,6 +42,23 @@ export enum MediaType {
   Video = 2,
 }
 
+/** Mirrors `App\Enums\FuseType`: karakteristika osigurača. */
+export enum FuseType {
+  B = 1,
+  C = 2,
+}
+
+/** `App\Enums\FuseRating`: jačine koje se biraju, u amperima. */
+export const FUSE_RATINGS = [6, 10, 16, 20, 25, 32] as const
+
+/** Mirrors `App\Enums\FuseBoardTemplate`: četiri izgleda PDF-a rasporeda. */
+export enum FuseBoardTemplate {
+  Table = 1,
+  Rail = 2,
+  Cards = 3,
+  Drawing = 4,
+}
+
 export const balanceSchema = z.object({
   amount: z.string(),
   currency: z.enum(Currency),
@@ -159,7 +176,6 @@ export const noteSchema = z.object({
   site_id: z.number(),
   body: z.string(),
   author: z.string().nullable().optional(),
-  can_edit: z.boolean(),
   created_at: z.string(),
 })
 
@@ -176,7 +192,6 @@ export const mediaSchema = z.object({
   author: z.string().nullable().optional(),
   url: z.string(),
   thumbnail_url: z.string().nullable(),
-  can_delete: z.boolean(),
   created_at: z.string(),
 })
 
@@ -343,6 +358,29 @@ export const documentSchema = z.object({
 })
 
 export type SiteDocument = z.infer<typeof documentSchema>
+
+export const fuseSchema = z.object({
+  number: z.number(),
+  name: z.string(),
+  type: z.enum(FuseType),
+  rating: z.number(),
+})
+
+export const fuseBoardSchema = z.object({
+  id: z.number(),
+  site_id: z.number(),
+  name: z.string(),
+  fuses: z.array(fuseSchema),
+  pdf_urls: z.array(z.object({ template: z.enum(FuseBoardTemplate), url: z.string() })),
+})
+
+export type FuseBoard = z.infer<typeof fuseBoardSchema>
+
+/** Bez `fuses` server menja samo naziv, a osigurači ostaju. */
+export interface FuseBoardPayload {
+  name: string
+  fuses?: Array<{ name: string; type: FuseType; rating: number }>
+}
 
 export const suggestionSchema = z.object({
   source: z.enum(['price_list', 'history']),

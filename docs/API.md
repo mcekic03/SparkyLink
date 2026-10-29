@@ -3,7 +3,7 @@
 Laravel API po šablonu Larastarter. Sve prijavljene rute su pod `/api/admin` (Sanctum token:
 `Authorization: Bearer <token>`), uz `Accept: application/json` i po želji `X-Client-Locale: sr|en`.
 Odgovor: `{ "message"?, "data"?, "pagination"? }`; greška 422: `{ "message", "errors": { polje: [poruka] } }`.
-Zabranjena ruta vraća **404** (kao šablon), da se frontend ne odjavi.
+Sistem ima jedan nalog (vlasnik), pa prijavljen korisnik sme sve; nema uloga ni ruta za korisnike.
 
 Iznosi su stringovi sa 2 decimale (`"117.35"`), kurs sa 4. Datumi bez vremena: `YYYY-MM-DD`.
 Decimalni zarez se prihvata (`"12,5"`).
@@ -12,13 +12,16 @@ Decimalni zarez se prihvata (`"12,5"`).
 
 | Enum | Vrednosti |
 |---|---|
-| `role_id` | 1 super administrator, 2 administrator, 3 radnik |
+| `role_id` | 1 vlasnik (jedini nalog) |
 | `currency` | 1 RSD, 2 EUR |
 | `status` (gradilište) | 1 ponuda – čeka odgovor, 2 otvoreno, 3 zatvoreno |
 | `payment_status` (računa se) | 1 nije plaćeno, 2 delimično plaćeno, 3 plaćeno u celosti |
 | `type` (stavka) | 1 materijal, 2 usluga, 3 ostalo |
 | `type` (dokument) | 1 ponuda, 2 završni račun |
 | `status` (fiskalni račun) | 1 čeka preuzimanje, 2 preuzet, 3 greška, 4 slika računa |
+| `type` (osigurač) | 1 B, 2 C |
+| `rating` (osigurač) | 6, 10, 16, 20, 25, 32 (ampera) |
+| `template` (PDF rasporeda) | 1 tabela, 2 šema table, 3 kartice, 4 tehnički crtež |
 
 ## Prijava
 
@@ -27,21 +30,21 @@ Decimalni zarez se prihvata (`"12,5"`).
 | `POST /api/admin/login` | `{ email, password }` → `{ token, expires_in, data: User }` |
 | `POST /api/admin/refresh`, `POST /api/admin/logout` | novi token / odjava |
 | `GET/PUT /api/admin/user/profile-information` | profil (ime, mejl, lozinka) |
+| `POST /api/admin/forgot-password`, `POST /api/admin/reset-password` | iz šablona; slanje mejla nije podešeno i aplikacija ih ne koristi (lozinka vlasnika se vraća komandom, vidi `DEPLOYMENT.md`) |
 
-## Svi prijavljeni (i radnik)
+## Gradilišta, napomene, slike i fiskalni računi
 
 | Ruta | Opis |
 |---|---|
-| `GET /sites` | lista; `search`, `status`, `page`, `per_page`. Admin dobija i `financials` i filter `payment_status`, `trashed=1` |
-| `GET /sites/{id}` | gradilište (radnik bez iznosa i marže) |
-| `GET/POST /sites/{id}/notes`, `PUT/DELETE /notes/{id}` | napomene (menja autor ili admin) |
+| `GET /sites` | lista sa `financials`; `search`, `status`, `payment_status`, `trashed=1`, `page`, `per_page` |
+| `GET /sites/{id}` | gradilište sa maržom i finansijama (i obrisano) |
+| `GET/POST /sites/{id}/notes`, `PUT/DELETE /notes/{id}` | napomene |
 | `GET/POST /sites/{id}/media`, `PUT/DELETE /media/{id}` | slike i video: `file` (+ `thumbnail` za video, `caption`, `taken_at`); jedan fajl po zahtevu |
 | `POST /sites/{id}/receipts/preview` | `{ qr_url }` → `{ fetched, receipt: { store_name, issued_at, total_amount, items: [...] } }` (ništa se ne čuva) |
 | `POST /sites/{id}/receipts` | multipart: `qr_url` i/ili `photo`, `items[]` (stavke za uvoz), `note`, `store_name`, `issued_at` |
 | `GET /sites/{id}/receipts`, `GET /receipts?search=`, `GET /receipts/{id}` | računi; detalj sadrži `journal` i `items_data` |
-| `GET /settings` | podešavanja (radnik dobija samo naziv firme i logo) |
 
-## Samo administratori (super-admin i admin)
+## Novac, dokumenti, cenovnik i kurs
 
 | Ruta | Opis |
 |---|---|
@@ -55,20 +58,23 @@ Decimalni zarez se prihvata (`"12,5"`).
 | `GET/POST /sites/{id}/labor-entries`, `PUT/DELETE /labor-entries/{id}` | rad: `currency, workers_count, hours, hourly_rate, worked_at, exchange_rate?, description?` |
 | `GET/POST /sites/{id}/payments`, `PUT/DELETE /payments/{id}` | uplate: `currency, amount, paid_at, exchange_rate?, note?` |
 | `GET/POST /sites/{id}/documents`, `DELETE /documents/{id}` | ponuda / završni račun: `type, issued_at?, note?, is_itemized?` → `pdf_url` |
+| `GET/POST /sites/{id}/fuse-boards`, `PUT/DELETE /fuse-boards/{id}` | raspored osigurača jedne table: `{ name, fuses?: [{ name, type, rating }] }`, redom kao na tabli (redni broj je mesto u spisku); bez `fuses` menja se samo naziv → `{ id, name, fuses: [{ number, name, type, rating }], pdf_urls: [{ template, url }] }` |
 | `POST /receipts/{id}/refetch`, `POST /receipts/{id}/items`, `DELETE /receipts/{id}` | ponovno preuzimanje, naknadni uvoz stavki, brisanje (sa uvezenim stavkama) |
 | `GET /item-suggestions?search=&type=` | predlozi iz cenovnika i ranijih stavki |
 | `GET/POST /price-list-items`, `PUT/DELETE /price-list-items/{id}` | cenovnik |
 | `GET /exchange-rates`, `GET /exchange-rates/{YYYY-MM-DD}`, `POST /exchange-rates` | kurs (preuzet ili ručni) |
+| `GET /activity-logs`, `GET /activity-logs/{id}` | dnevnik izmena iz šablona (aplikacija ga ne prikazuje) |
 
-## Samo super-admin
+## Podešavanja
 
 | Ruta | Opis |
 |---|---|
-| `GET/POST /users`, `GET/PUT/DELETE /users/{id}` | korisnici (`role_id` 1–3) |
-| `PUT /settings`, `POST /settings/logo` | podaci firme, podrazumevane vrednosti, napomene na PDF-u, logo |
+| `GET/PUT /settings`, `POST /settings/logo` | podaci firme, podrazumevane vrednosti, napomene na PDF-u, logo |
 
 ## Fajlovi (bez tokena)
 
 Resursi daju **relativne potpisane** linkove (važe 2 sata): `url`/`thumbnail_url` slike i videa,
-`photo_url` i `copy_url` računa, `pdf_url` dokumenta – rute `/api/files/...` sa `signature` u upitu.
+`photo_url` i `copy_url` računa, `pdf_url` dokumenta i `pdf_urls` rasporeda osigurača – rute
+`/api/files/...` sa `signature` u upitu. Kopija računa i raspored osigurača (A4 položeno,
+`/api/files/fuse-boards/{id}/{template}`) prave se pri svakom otvaranju i ne čuvaju se.
 Logo je javan: `GET /api/files/logo`.

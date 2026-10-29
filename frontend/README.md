@@ -1,7 +1,9 @@
 # SparkyLink – web (frontend)
 
 React SPA za SparkyLink (Cekić Elektrik): gradilišta, stavke, rad, uplate, ponude i završni računi,
-skeniranje fiskalnih računa, slike i video, napomene, pregled finansija. PWA – instalira se na telefon.
+raspored osigurača, skeniranje fiskalnih računa, uvoz stavki iz Excel-a, slike i video, napomene,
+pregled finansija.
+PWA – instalira se na telefon. Kako sistem radi: [../docs/SISTEM.md](../docs/SISTEM.md).
 
 - Pravila za rad na kodu: [CLAUDE.md](CLAUDE.md) (šablon react-starter, [docs/TEMPLATE.md](docs/TEMPLATE.md))
 - API: [../docs/API.md](../docs/API.md) – na istom domenu kao sajt (`/api`)

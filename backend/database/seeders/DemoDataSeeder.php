@@ -8,12 +8,10 @@ use App\Actions\SiteItem\Admin\SaveSiteItemAction;
 use App\Enums\Currency;
 use App\Enums\ExchangeRateSource;
 use App\Enums\ItemType;
-use App\Enums\Role;
 use App\Enums\SiteStatus;
 use App\Models\ExchangeRate;
 use App\Models\PriceListItem;
 use App\Models\Site;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 
@@ -37,12 +35,6 @@ class DemoDataSeeder extends Seeder
                 ['rate' => '117.' . str_pad((string) (1500 + $daysAgo * 7), 4, '0', STR_PAD_LEFT), 'source' => ExchangeRateSource::API]
             );
         }
-
-        User::query()->firstOrCreate(
-            ['email' => 'radnik@sparkylink.rs'],
-            // Ista lozinka kao prvi nalog (SECRET_PASSWORD), da nijedna lozinka ne stoji u kodu.
-            ['name' => 'Petar Radnik', 'password' => config('app.secret_password'), 'role_id' => Role::WORKER]
-        );
 
         $this->priceList();
 

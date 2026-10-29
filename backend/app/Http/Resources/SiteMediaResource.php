@@ -15,8 +15,6 @@ class SiteMediaResource extends TimezoneAwareResource
 {
     public function fromArray(Request $request): array
     {
-        $user = $request->user();
-
         return [
             'id' => $this->id,
             'site_id' => $this->site_id,
@@ -32,7 +30,6 @@ class SiteMediaResource extends TimezoneAwareResource
             'thumbnail_url' => $this->thumbnail_path
                 ? signed_file_url('api.files.media', ['media' => $this->id, 'variant' => 'thumb'])
                 : null,
-            'can_delete' => $user !== null && ($user->id === $this->user_id || $user->canViewFinances()),
             'taken_at' => $this->taken_at,
             'created_at' => $this->created_at,
         ];

@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('role_id')
                   ->after('id')
-                  ->default(Role::ADMIN->value)
+                  ->default(Role::SUPER_ADMIN->value)
                   ->constrained('roles');
         });
     }

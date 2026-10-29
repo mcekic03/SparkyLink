@@ -23,7 +23,7 @@ import { ReceiptItemsEditor, rowsFrom, selectedItems } from './receipt-items-edi
 import type { EditableRow } from './receipt-items-editor'
 import { ReceiptScannerDialog } from './receipt-scanner-dialog'
 
-export function ReceiptsTab({ site, canManage }: { site: Site; canManage: boolean }) {
+export function ReceiptsTab({ site }: { site: Site }) {
   const { t } = useTranslation()
   const [scanning, setScanning] = useState(false)
   const [openId, setOpenId] = useState<number | undefined>(undefined)
@@ -77,13 +77,13 @@ export function ReceiptsTab({ site, canManage }: { site: Site; canManage: boolea
 
       {scanning && <ReceiptScannerDialog site={site} open onOpenChange={setScanning} />}
       {openId !== undefined && (
-        <ReceiptDetailDialog receiptId={openId} site={site} canManage={canManage} onClose={() => setOpenId(undefined)} />
+        <ReceiptDetailDialog receiptId={openId} site={site} onClose={() => setOpenId(undefined)} />
       )}
     </div>
   )
 }
 
-function ReceiptDetailDialog({ receiptId, site, canManage, onClose }: { receiptId: number; site: Site; canManage: boolean; onClose: () => void }) {
+function ReceiptDetailDialog({ receiptId, site, onClose }: { receiptId: number; site: Site; onClose: () => void }) {
   const { t } = useTranslation()
   const invalidate = useInvalidateMoney()
   const [importing, setImporting] = useState<EditableRow[] | undefined>(undefined)
@@ -192,19 +192,17 @@ function ReceiptDetailDialog({ receiptId, site, canManage, onClose }: { receiptI
               </>
             ) : (
               <>
-                {canManage && (
-                  <ConfirmBubble message={t('receipts.delete.confirm')} onConfirm={() => deleteMutation.mutate(receipt.id, { onSuccess: onClose })} side="top">
-                    <Button variant="outline" className="text-destructive">
-                      <Trash2Icon /> {t('common.delete')}
-                    </Button>
-                  </ConfirmBubble>
-                )}
-                {canManage && (receipt.status === ReceiptStatus.Pending || receipt.status === ReceiptStatus.Failed) && (
+                <ConfirmBubble message={t('receipts.delete.confirm')} onConfirm={() => deleteMutation.mutate(receipt.id, { onSuccess: onClose })} side="top">
+                  <Button variant="outline" className="text-destructive">
+                    <Trash2Icon /> {t('common.delete')}
+                  </Button>
+                </ConfirmBubble>
+                {(receipt.status === ReceiptStatus.Pending || receipt.status === ReceiptStatus.Failed) && (
                   <Button variant="outline" onClick={() => refetchMutation.mutate(receipt.id)} disabled={refetchMutation.isPending}>
                     <RefreshCwIcon /> {t('receipts.refetch')}
                   </Button>
                 )}
-                {canManage && receipt.status === ReceiptStatus.Fetched && receipt.items_count === 0 && (receipt.items_data?.length ?? 0) > 0 && (
+                {receipt.status === ReceiptStatus.Fetched && receipt.items_count === 0 && (receipt.items_data?.length ?? 0) > 0 && (
                   <Button variant="outline" onClick={() => startImport(receipt)}>
                     {t('receipts.importItems')}
                   </Button>

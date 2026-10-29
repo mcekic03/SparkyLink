@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import z from 'zod'
-import { FINANCE_ROLES } from '#/types/user'
 import { PriceListPage } from '#/features/price-list/pages/price-list.page'
 
 const priceListSearchSchema = z.object({
@@ -12,5 +11,4 @@ const priceListSearchSchema = z.object({
 export const Route = createFileRoute('/_authed/cenovnik')({
   validateSearch: priceListSearchSchema,
   component: PriceListPage,
-  staticData: { roles: FINANCE_ROLES },
 })

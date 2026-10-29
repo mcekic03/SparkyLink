@@ -7,7 +7,7 @@ use App\Models\SiteItem;
 use Laravel\Sanctum\Sanctum;
 
 beforeEach(function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
     rateFor('2026-10-20', '117.2000');
     $this->site = Site::factory()->create();
 });

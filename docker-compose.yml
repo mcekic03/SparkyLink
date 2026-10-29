@@ -39,7 +39,7 @@ x-api-env: &api-env
   APP_ENV: "${APP_ENV:-production}"
   APP_KEY: "${APP_KEY:?APP_KEY mora biti postavljen (vidi .env.example)}"
   APP_DEBUG: "${APP_DEBUG:-false}"
-  APP_URL: "https://${APP_DOMAIN:?APP_DOMAIN mora biti postavljen, npr. sparkylink.cekic-elektrik.rs}"
+  APP_URL: "https://${APP_DOMAIN:?APP_DOMAIN mora biti postavljen, npr. sparkylink.vtsappsteam.edu.rs}"
   APP_LOCALE: sr
   APP_FALLBACK_LOCALE: en
   APP_TIMEZONE: UTC
@@ -62,7 +62,7 @@ x-api-env: &api-env
   SESSION_DRIVER: database
 
   # Prvi nalog (super administrator) pri prvom startu; lozinka se menja u profilu.
-  ADMIN_EMAIL: "${ADMIN_EMAIL:-admin@sparkylink.rs}"
+  ADMIN_EMAIL: "${ADMIN_EMAIL:-ceka.mihajlo03@gmail.com}"
   SECRET_PASSWORD: "${SECRET_PASSWORD:?SECRET_PASSWORD mora biti postavljen (lozinka prvog naloga)}"
 
   # PDF (ponude, zavrsni racuni, kopije fiskalnih racuna) pravi Gotenberg iz ovog stack-a.

@@ -12,8 +12,8 @@ beforeEach(function () {
     $this->site = Site::factory()->create();
 });
 
-test('a worker uploads a photo, gets a thumbnail and private signed links', function () {
-    Sanctum::actingAs(worker());
+test('an uploaded photo gets a thumbnail and private signed links', function () {
+    Sanctum::actingAs(superAdmin());
 
     $media = $this->post("/api/admin/sites/{$this->site->id}/media", [
         'file' => UploadedFile::fake()->image('kablovi.jpg', 1600, 1200),
@@ -30,7 +30,7 @@ test('a worker uploads a photo, gets a thumbnail and private signed links', func
 });
 
 test('a video is stored as is, with the thumbnail sent by the browser', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $media = $this->post("/api/admin/sites/{$this->site->id}/media", [
         'file' => UploadedFile::fake()->create('trasa.mp4', 2048, 'video/mp4'),
@@ -42,40 +42,31 @@ test('a video is stored as is, with the thumbnail sent by the browser', function
 });
 
 test('a file that is neither image nor video is refused', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $this->post("/api/admin/sites/{$this->site->id}/media", [
         'file' => UploadedFile::fake()->create('virus.exe', 10, 'application/octet-stream'),
     ], ['Accept' => 'application/json'])->assertUnprocessable()->assertJsonValidationErrors('file');
 });
 
-test('a worker cannot delete somebody else\'s photo; deleting removes the files', function () {
-    Sanctum::actingAs(plainAdmin());
+test('deleting a photo removes its files', function () {
+    Sanctum::actingAs(superAdmin());
     $id = $this->post("/api/admin/sites/{$this->site->id}/media", [
         'file' => UploadedFile::fake()->image('a.jpg', 800, 600),
     ], ['Accept' => 'application/json'])->assertOk()->json('data.id');
     $media = SiteMedia::query()->findOrFail($id);
 
-    Sanctum::actingAs(worker());
-    $this->deleteJson("/api/admin/media/{$id}")->assertNotFound();
-
-    Sanctum::actingAs(plainAdmin());
     $this->deleteJson("/api/admin/media/{$id}")->assertOk();
     Storage::disk('local')->assertMissing($media->path);
 });
 
-test('notes are added by anyone on the site and edited only by their author or an admin', function () {
-    $author = worker();
-    Sanctum::actingAs($author);
+test('a note is added, changed and keeps its author', function () {
+    Sanctum::actingAs(superAdmin());
     $note = $this->postJson("/api/admin/sites/{$this->site->id}/notes", ['body' => 'Investitor traži još 3 utičnice u dnevnoj sobi.'])
                  ->assertOk()->json('data');
 
-    expect($note['can_edit'])->toBeTrue();
+    expect($note['author'])->toBe(superAdmin()->name);
 
-    Sanctum::actingAs(worker());
-    $this->putJson("/api/admin/notes/{$note['id']}", ['body' => 'promena'])->assertNotFound();
-
-    Sanctum::actingAs(plainAdmin());
     $this->putJson("/api/admin/notes/{$note['id']}", ['body' => 'Dogovoreno: 3 utičnice.'])->assertOk();
     expect($this->getJson("/api/admin/sites/{$this->site->id}/notes")->json('data.0.body'))->toBe('Dogovoreno: 3 utičnice.');
 });

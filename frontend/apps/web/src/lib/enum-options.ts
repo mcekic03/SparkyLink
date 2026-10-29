@@ -16,7 +16,7 @@ export interface EnumOption<TValue> {
  * Here a missing key is visible in the locale file instead.
  *
  * `keyPrefix` is a translation path whose children are keyed by enum value,
- * e.g. `users.roles` with `{ "1": "Super Admin" }`.
+ * e.g. `fuseBoards.templates` with `{ "1": "Tabela" }`.
  */
 export function enumOptions(
   enumObject: Record<string, string | number>,

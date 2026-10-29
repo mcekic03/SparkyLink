@@ -10,7 +10,6 @@ use App\Http\Resources\SiteMediaResource;
 use App\Models\Site;
 use App\Models\SiteMedia;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class SiteMediaController extends Controller
 {
@@ -39,26 +38,15 @@ class SiteMediaController extends Controller
 
     public function update(UpdateSiteMediaRequest $request, SiteMedia $media): JsonResponse
     {
-        $this->ensureCanModify($request, $media);
-
         $media->update($request->validated());
 
         return response()->success(message: __('media_updated'), data: new SiteMediaResource($media->load('user:id,name')));
     }
 
-    public function destroy(Request $request, SiteMedia $media): JsonResponse
+    public function destroy(SiteMedia $media): JsonResponse
     {
-        $this->ensureCanModify($request, $media);
-
         $media->delete();
 
         return response()->success(message: __('media_deleted'));
-    }
-
-    private function ensureCanModify(Request $request, SiteMedia $media): void
-    {
-        $user = $request->user();
-
-        abort_unless($user->id === $media->user_id || $user->canViewFinances(), 404);
     }
 }

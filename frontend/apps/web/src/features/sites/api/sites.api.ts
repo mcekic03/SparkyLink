@@ -4,6 +4,7 @@ import { messageResponseSchema, paginationSchema } from '#/types/api'
 import type { PaginatedResponse } from '#/types/api'
 import {
   documentSchema,
+  fuseBoardSchema,
   laborEntrySchema,
   mediaSchema,
   noteSchema,
@@ -19,6 +20,8 @@ import {
 } from '../types'
 import type {
   DocumentType,
+  FuseBoard,
+  FuseBoardPayload,
   ImportItem,
   ItemPayload,
   ItemSuggestion,
@@ -196,6 +199,25 @@ export async function createDocument(
 
 export async function deleteDocument(id: number) {
   const response = await api.delete<unknown>(`${ADMIN}/documents/${id}`)
+  return messageResponseSchema.parse(response.data)
+}
+
+// ===== Raspored osigurača =====
+
+export async function fetchFuseBoards(siteId: number): Promise<FuseBoard[]> {
+  const response = await api.get<unknown>(`${ADMIN}/sites/${siteId}/fuse-boards`)
+  return dataOf(z.array(fuseBoardSchema)).parse(response.data).data
+}
+
+export async function saveFuseBoard(siteId: number, payload: FuseBoardPayload, id?: number) {
+  const response = id
+    ? await api.put<unknown>(`${ADMIN}/fuse-boards/${id}`, payload)
+    : await api.post<unknown>(`${ADMIN}/sites/${siteId}/fuse-boards`, payload)
+  return dataOf(fuseBoardSchema).parse(response.data)
+}
+
+export async function deleteFuseBoard(id: number) {
+  const response = await api.delete<unknown>(`${ADMIN}/fuse-boards/${id}`)
   return messageResponseSchema.parse(response.data)
 }
 

@@ -20,9 +20,6 @@ import { Route as UnauthedIndexRouteImport } from './routes/_unauthed/index'
 import { Route as UnauthedSignInRouteImport } from './routes/_unauthed/sign-in'
 import { Route as AuthedGradilistaIndexRouteImport } from './routes/_authed/gradilista/index'
 import { Route as AuthedGradilistaNovoRouteImport } from './routes/_authed/gradilista/novo'
-import { Route as AuthedUsersIndexRouteImport } from './routes/_authed/users/index'
-import { Route as AuthedUsersUserIdRouteImport } from './routes/_authed/users/$userId'
-import { Route as AuthedUsersNewRouteImport } from './routes/_authed/users/new'
 import { Route as AuthedGradilistaSiteIdIndexRouteImport } from './routes/_authed/gradilista/$siteId/index'
 import { Route as AuthedGradilistaSiteIdIzmenaRouteImport } from './routes/_authed/gradilista/$siteId/izmena'
 
@@ -79,21 +76,6 @@ const AuthedGradilistaNovoRoute = AuthedGradilistaNovoRouteImport.update({
   path: '/gradilista/novo',
   getParentRoute: () => AuthedRoute,
 } as any)
-const AuthedUsersIndexRoute = AuthedUsersIndexRouteImport.update({
-  id: '/users/',
-  path: '/users/',
-  getParentRoute: () => AuthedRoute,
-} as any)
-const AuthedUsersUserIdRoute = AuthedUsersUserIdRouteImport.update({
-  id: '/users/$userId',
-  path: '/users/$userId',
-  getParentRoute: () => AuthedRoute,
-} as any)
-const AuthedUsersNewRoute = AuthedUsersNewRouteImport.update({
-  id: '/users/new',
-  path: '/users/new',
-  getParentRoute: () => AuthedRoute,
-} as any)
 const AuthedGradilistaSiteIdIndexRoute =
   AuthedGradilistaSiteIdIndexRouteImport.update({
     id: '/gradilista/$siteId/',
@@ -116,10 +98,7 @@ export interface FileRoutesByFullPath {
   '/racuni': typeof AuthedRacuniRoute
   '/sign-in': typeof UnauthedSignInRoute
   '/gradilista/novo': typeof AuthedGradilistaNovoRoute
-  '/users/$userId': typeof AuthedUsersUserIdRoute
-  '/users/new': typeof AuthedUsersNewRoute
   '/gradilista/': typeof AuthedGradilistaIndexRoute
-  '/users/': typeof AuthedUsersIndexRoute
   '/gradilista/$siteId/izmena': typeof AuthedGradilistaSiteIdIzmenaRoute
   '/gradilista/$siteId/': typeof AuthedGradilistaSiteIdIndexRoute
 }
@@ -132,10 +111,7 @@ export interface FileRoutesByTo {
   '/racuni': typeof AuthedRacuniRoute
   '/sign-in': typeof UnauthedSignInRoute
   '/gradilista/novo': typeof AuthedGradilistaNovoRoute
-  '/users/$userId': typeof AuthedUsersUserIdRoute
-  '/users/new': typeof AuthedUsersNewRoute
   '/gradilista': typeof AuthedGradilistaIndexRoute
-  '/users': typeof AuthedUsersIndexRoute
   '/gradilista/$siteId/izmena': typeof AuthedGradilistaSiteIdIzmenaRoute
   '/gradilista/$siteId': typeof AuthedGradilistaSiteIdIndexRoute
 }
@@ -151,10 +127,7 @@ export interface FileRoutesById {
   '/_unauthed/sign-in': typeof UnauthedSignInRoute
   '/_unauthed/': typeof UnauthedIndexRoute
   '/_authed/gradilista/novo': typeof AuthedGradilistaNovoRoute
-  '/_authed/users/$userId': typeof AuthedUsersUserIdRoute
-  '/_authed/users/new': typeof AuthedUsersNewRoute
   '/_authed/gradilista/': typeof AuthedGradilistaIndexRoute
-  '/_authed/users/': typeof AuthedUsersIndexRoute
   '/_authed/gradilista/$siteId/izmena': typeof AuthedGradilistaSiteIdIzmenaRoute
   '/_authed/gradilista/$siteId/': typeof AuthedGradilistaSiteIdIndexRoute
 }
@@ -169,10 +142,7 @@ export interface FileRouteTypes {
     | '/racuni'
     | '/sign-in'
     | '/gradilista/novo'
-    | '/users/$userId'
-    | '/users/new'
     | '/gradilista/'
-    | '/users/'
     | '/gradilista/$siteId/izmena'
     | '/gradilista/$siteId/'
   fileRoutesByTo: FileRoutesByTo
@@ -185,10 +155,7 @@ export interface FileRouteTypes {
     | '/racuni'
     | '/sign-in'
     | '/gradilista/novo'
-    | '/users/$userId'
-    | '/users/new'
     | '/gradilista'
-    | '/users'
     | '/gradilista/$siteId/izmena'
     | '/gradilista/$siteId'
   id:
@@ -203,10 +170,7 @@ export interface FileRouteTypes {
     | '/_unauthed/sign-in'
     | '/_unauthed/'
     | '/_authed/gradilista/novo'
-    | '/_authed/users/$userId'
-    | '/_authed/users/new'
     | '/_authed/gradilista/'
-    | '/_authed/users/'
     | '/_authed/gradilista/$siteId/izmena'
     | '/_authed/gradilista/$siteId/'
   fileRoutesById: FileRoutesById
@@ -295,27 +259,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedGradilistaNovoRouteImport
       parentRoute: typeof AuthedRoute
     }
-    '/_authed/users/': {
-      id: '/_authed/users/'
-      path: '/users'
-      fullPath: '/users/'
-      preLoaderRoute: typeof AuthedUsersIndexRouteImport
-      parentRoute: typeof AuthedRoute
-    }
-    '/_authed/users/$userId': {
-      id: '/_authed/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/users/$userId'
-      preLoaderRoute: typeof AuthedUsersUserIdRouteImport
-      parentRoute: typeof AuthedRoute
-    }
-    '/_authed/users/new': {
-      id: '/_authed/users/new'
-      path: '/users/new'
-      fullPath: '/users/new'
-      preLoaderRoute: typeof AuthedUsersNewRouteImport
-      parentRoute: typeof AuthedRoute
-    }
     '/_authed/gradilista/$siteId/': {
       id: '/_authed/gradilista/$siteId/'
       path: '/gradilista/$siteId'
@@ -340,10 +283,7 @@ interface AuthedRouteChildren {
   AuthedPodesavanjaRoute: typeof AuthedPodesavanjaRoute
   AuthedRacuniRoute: typeof AuthedRacuniRoute
   AuthedGradilistaNovoRoute: typeof AuthedGradilistaNovoRoute
-  AuthedUsersUserIdRoute: typeof AuthedUsersUserIdRoute
-  AuthedUsersNewRoute: typeof AuthedUsersNewRoute
   AuthedGradilistaIndexRoute: typeof AuthedGradilistaIndexRoute
-  AuthedUsersIndexRoute: typeof AuthedUsersIndexRoute
   AuthedGradilistaSiteIdIzmenaRoute: typeof AuthedGradilistaSiteIdIzmenaRoute
   AuthedGradilistaSiteIdIndexRoute: typeof AuthedGradilistaSiteIdIndexRoute
 }
@@ -355,10 +295,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedPodesavanjaRoute: AuthedPodesavanjaRoute,
   AuthedRacuniRoute: AuthedRacuniRoute,
   AuthedGradilistaNovoRoute: AuthedGradilistaNovoRoute,
-  AuthedUsersUserIdRoute: AuthedUsersUserIdRoute,
-  AuthedUsersNewRoute: AuthedUsersNewRoute,
   AuthedGradilistaIndexRoute: AuthedGradilistaIndexRoute,
-  AuthedUsersIndexRoute: AuthedUsersIndexRoute,
   AuthedGradilistaSiteIdIzmenaRoute: AuthedGradilistaSiteIdIzmenaRoute,
   AuthedGradilistaSiteIdIndexRoute: AuthedGradilistaSiteIdIndexRoute,
 }

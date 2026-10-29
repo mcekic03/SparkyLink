@@ -2,6 +2,11 @@
 
 *Vlasnik softvera: Cekić Elektrik. Datum: 26.10.2026. Repozitorijum: `SparkyLink`.*
 
+> Prvobitna specifikacija, sačuvana kao istorija odluka. Trenutno stanje opisuje
+> [`docs/SISTEM.md`](../../SISTEM.md): posle ovoga su dodati statusi gradilišta (ponuda / otvoreno /
+> zatvoreno), ponuda i završni račun (tabela `documents` umesto `statements`), status naplate,
+> uvoz iz Excel-a sa novim verzijama dokumenta i zbirni upis nabavne cene.
+
 ## 1. Namena
 
 SparkyLink je interni softver za električara koji vodi više gradilišta. Za svako

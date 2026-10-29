@@ -8,7 +8,7 @@ const GROUPS: readonly NavGroup[] = [
     labelKey: 'nav.groups.general',
     items: [
       { to: '/dashboard', titleKey: 'nav.dashboard', icon: Circle },
-      { to: '/users', titleKey: 'nav.users', icon: Circle },
+      { to: '/podesavanja', titleKey: 'nav.settings', icon: Circle },
     ],
   },
   {

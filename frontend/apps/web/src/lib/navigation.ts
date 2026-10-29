@@ -4,7 +4,6 @@ import {
   ReceiptText,
   Settings,
   Tags,
-  Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { ParseKeys } from 'i18next'
@@ -39,7 +38,6 @@ export const NAVIGATION: readonly NavGroup[] = [
     labelKey: 'nav.groups.administration',
     items: [
       { to: '/podesavanja', titleKey: 'nav.settings', icon: Settings },
-      { to: '/users', titleKey: 'nav.users', icon: Users },
     ],
   },
 ]

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\FuseBoardTemplate;
 use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,7 @@ Route::middleware('signed:relative')->prefix('files')->as('files.')->group(funct
     Route::get('receipts/{receipt}/photo', [FileController::class, 'receiptPhoto'])->name('receipts.photo');
     Route::get('receipts/{receipt}/copy', [FileController::class, 'receiptCopy'])->name('receipts.copy');
     Route::get('documents/{document}', [FileController::class, 'document'])->name('documents');
+    Route::get('fuse-boards/{fuseBoard}/{template}', [FileController::class, 'fuseBoard'])
+         ->whereIn('template', FuseBoardTemplate::values())
+         ->name('fuse-boards');
 });

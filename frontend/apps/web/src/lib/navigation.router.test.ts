@@ -33,28 +33,13 @@ describe('navigation against the real route tree', () => {
     }
   })
 
-  it('shows an admin the business work but not administration', () => {
-    expect(visibleTo(UserRole.Admin)).toEqual([
-      '/dashboard',
-      '/gradilista',
-      '/racuni',
-      '/cenovnik',
-    ])
-  })
-
-  // Radnik ne vidi novac: bez pregleda finansija i cenovnika.
-  it('shows a worker only sites and receipts', () => {
-    expect(visibleTo(UserRole.Worker)).toEqual(['/gradilista', '/racuni'])
-  })
-
-  it('shows everything to a super admin', () => {
+  it('shows the owner every destination', () => {
     expect(visibleTo(UserRole.SuperAdmin)).toEqual([
       '/dashboard',
       '/gradilista',
       '/racuni',
       '/cenovnik',
       '/podesavanja',
-      '/users',
     ])
   })
 

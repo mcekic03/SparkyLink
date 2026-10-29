@@ -11,7 +11,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 beforeEach(function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
     $this->site = Site::factory()->create(['currency' => Currency::EUR]);
 });
 
@@ -126,17 +126,4 @@ test('the import needs a date and at least one valid item', function () {
     ])->assertUnprocessable()->assertJsonValidationErrors(['occurred_at', 'files.0.items.0.name', 'files.0.items.0.quantity']);
 
     expect(SiteItem::query()->count())->toBe(0);
-});
-
-test('a worker can neither read nor import spreadsheets', function () {
-    Sanctum::actingAs(worker());
-
-    $this->post("/api/admin/sites/{$this->site->id}/items/spreadsheets", [
-        'files' => [storeSpreadsheetFile([['Dozna f60', 'kom', 30, 15]])],
-    ], ['Accept' => 'application/json'])->assertNotFound();
-
-    $this->postJson("/api/admin/sites/{$this->site->id}/items/import", [
-        'occurred_at' => '2026-10-20',
-        'files' => [['name' => 'ponuda.xls', 'items' => [['name' => 'Dozna f60', 'quantity' => '30', 'sale_price' => '15']]]],
-    ])->assertNotFound();
 });

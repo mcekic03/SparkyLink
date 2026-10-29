@@ -11,7 +11,7 @@ class ResetSuperAdminPasswordCommand extends Command
 {
     protected $signature = 'admin:reset-super-admin-password {password? : Nova lozinka (ako se izostavi, generise se)}';
 
-    protected $description = 'Postavlja novu lozinku super-admin nalogu (super@admin.com)';
+    protected $description = 'Postavlja novu lozinku prvom super-admin nalogu (vlasniku)';
 
     public function handle(): int
     {

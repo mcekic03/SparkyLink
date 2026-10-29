@@ -9,7 +9,7 @@ use App\Models\SiteItem;
 use Laravel\Sanctum\Sanctum;
 
 test('an admin creates an open site, which gets a start date', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $response = $this->postJson('/api/admin/sites', [
         'status' => SiteStatus::OPEN->value,
@@ -26,7 +26,7 @@ test('an admin creates an open site, which gets a start date', function () {
 });
 
 test('an offer can be created and later opened and closed', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $id = $this->postJson('/api/admin/sites', [
         'status' => SiteStatus::OFFER->value,
@@ -44,7 +44,7 @@ test('an offer can be created and later opened and closed', function () {
 });
 
 test('the list filters by work status and payment status and searches the investor', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
 
     $unpaid = Site::factory()->create(['name' => 'Kuća A', 'investor_name' => 'Jovan Jovanović']);
     SiteItem::factory()->for($unpaid)->create();
@@ -73,7 +73,7 @@ test('the list filters by work status and payment status and searches the invest
 });
 
 test('a deleted site disappears from the list but can be restored', function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
     $site = Site::factory()->create();
 
     $this->deleteJson("/api/admin/sites/{$site->id}")->assertOk();
@@ -82,20 +82,4 @@ test('a deleted site disappears from the list but can be restored', function () 
 
     $this->postJson("/api/admin/sites/{$site->id}/restore")->assertOk();
     expect($this->getJson('/api/admin/sites')->json('data.0.id'))->toBe($site->id);
-});
-
-test('a worker sees sites without any money', function () {
-    $site = Site::factory()->create(['markup_percent' => '30']);
-    SiteItem::factory()->for($site)->create();
-    Sanctum::actingAs(worker());
-
-    $list = $this->getJson('/api/admin/sites')->assertOk()->json('data.0');
-    $detail = $this->getJson("/api/admin/sites/{$site->id}")->assertOk()->json('data');
-
-    expect($list)->not->toHaveKeys(['financials', 'markup_percent', 'effective_markup_percent'])
-        ->and($detail)->not->toHaveKeys(['financials', 'markup_percent'])
-        ->and($detail['name'])->toBe($site->name);
-
-    $this->getJson("/api/admin/sites/{$site->id}/items")->assertNotFound();
-    $this->getJson("/api/admin/sites/{$site->id}/summary")->assertNotFound();
 });

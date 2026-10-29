@@ -22,7 +22,7 @@ function firstImport(Site $site, array $rows, string $name = 'ponuda.xls'): int
 }
 
 beforeEach(function () {
-    Sanctum::actingAs(plainAdmin());
+    Sanctum::actingAs(superAdmin());
     rateFor('2026-10-20', '117.0000');
     rateFor('2026-10-27', '117.0000');
     $this->site = Site::factory()->create(['currency' => Currency::EUR]);

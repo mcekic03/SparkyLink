@@ -7,10 +7,8 @@ import { Button } from '@app/ui/components/button'
 import { DataTable, useDataTableFilters } from '#/components/data-table'
 import { PageHeader } from '#/components/page-header'
 import { QueryError } from '#/components/query-error'
-import { useAuth } from '#/lib/auth-context'
 import { logger } from '#/lib/logger'
 import { logOnFail } from '#/lib/log-on-fail'
-import { canViewFinances } from '#/types/user'
 import { fetchSites } from '../api/sites.api'
 import { sitesKeys } from '../api/sites.keys'
 import { sitesColumns, sitesTableConfig } from '../config/sites-table-config'
@@ -21,8 +19,6 @@ const routeApi = getRouteApi('/_authed/gradilista/')
 
 export function SitesPage() {
   const { t } = useTranslation()
-  const { user } = useAuth()
-  const finances = canViewFinances(user)
   const search = routeApi.useSearch()
 
   const { filterState, setSearch, setPage, setFilter, clearAllFilters, hasActiveFilters } = useDataTableFilters({ search })
@@ -51,13 +47,11 @@ export function SitesPage() {
         title={t('sites.title')}
         description={t('sites.description')}
         actions={
-          finances ? (
-            <Button asChild>
-              <Link to="/gradilista/novo">
-                <PlusIcon /> <span className="hidden sm:inline">{t('sites.create.action')}</span>
-              </Link>
-            </Button>
-          ) : null
+          <Button asChild>
+            <Link to="/gradilista/novo">
+              <PlusIcon /> <span className="hidden sm:inline">{t('sites.create.action')}</span>
+            </Link>
+          </Button>
         }
       />
       {isError ? (
@@ -68,9 +62,9 @@ export function SitesPage() {
         />
       ) : (
         <DataTable
-          columns={sitesColumns(t, finances)}
+          columns={sitesColumns(t)}
           data={data?.data ?? []}
-          config={sitesTableConfig(t, finances)}
+          config={sitesTableConfig(t)}
           filterState={filterState}
           onSearchChange={setSearch}
           onSetFilter={setFilter}

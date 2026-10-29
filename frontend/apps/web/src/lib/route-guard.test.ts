@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { checkAccess, requiredRolesFor } from './route-guard'
 import { UserRole } from '#/types/user'
 
-const { SuperAdmin, Admin } = UserRole
+const { SuperAdmin } = UserRole
+// Aplikacija ima jednu ulogu; druga postoji samo ovde, da se proveri zaštita sa više uloga.
+const Admin: UserRole = SuperAdmin + 1
 
 describe('requiredRolesFor', () => {
   it('collects restrictions from the matched chain', () => {

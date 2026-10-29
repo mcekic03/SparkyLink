@@ -3,11 +3,8 @@
 namespace App\Models;
 
 use App\Enums\Role;
-use App\Traits\Model\Filterable\Filterable;
-use App\Traits\Model\Filterable\HasColumns;
 use App\Traits\Model\HasRole;
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,7 +12,7 @@ use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * App\Models\User
+ * Jedini nalog u sistemu: vlasnik (pravi ga migracija iz ADMIN_EMAIL i SECRET_PASSWORD).
  *
  * @property int $id
  * @property Role $role_id
@@ -31,9 +28,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use Filterable;
     use HasApiTokens;
-    use HasColumns;
     use HasFactory;
     use HasRole;
     use Notifiable;
@@ -57,44 +52,4 @@ class User extends Authenticatable
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
-
-    // ===== 2. Scopes =====
-
-    public function scopeWithoutMe(Builder|self $query): Builder|self
-    {
-        return $query->where('id', '!=', auth()->id());
-    }
-
-    public function scopeFilters(Builder|self $query): Builder|self
-    {
-        $searchableColumns = self::columns()->exceptColumns('id', 'password', 'role_id')->getColumns();
-
-        return $query
-            ->withoutMe()
-            ->withoutSuperAdmins()
-            ->filterEnumFromRequest(Role::class, databaseField: 'role_id')
-            ->search($searchableColumns)
-            ->sortFromRequest(onlyByFields: self::columns()->exceptColumns('password')->getColumns())
-            ->initialSort();
-    }
-
-    // ===== 3. Helpers =====
-
-    public function isAdmin(): bool
-    {
-        return $this->hasRole(Role::ADMIN);
-    }
-
-    public function isWorker(): bool
-    {
-        return $this->hasRole(Role::WORKER);
-    }
-
-    /**
-     * Radnik ne vidi iznose, zaradu, uplate ni obracune (vidi Role::canViewFinances).
-     */
-    public function canViewFinances(): bool
-    {
-        return $this->role_id->canViewFinances();
-    }
 }

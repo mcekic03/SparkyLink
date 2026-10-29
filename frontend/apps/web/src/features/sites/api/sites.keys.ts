@@ -16,6 +16,7 @@ export const sitesKeys = {
   labor: (id: number) => [...sitesKeys.detail(id), 'labor'] as const,
   payments: (id: number) => [...sitesKeys.detail(id), 'payments'] as const,
   documents: (id: number) => [...sitesKeys.detail(id), 'documents'] as const,
+  fuseBoards: (id: number) => [...sitesKeys.detail(id), 'fuse-boards'] as const,
   notes: (id: number) => [...sitesKeys.detail(id), 'notes'] as const,
   media: (id: number) => [...sitesKeys.detail(id), 'media'] as const,
   receipts: (id: number) => [...sitesKeys.detail(id), 'receipts'] as const,

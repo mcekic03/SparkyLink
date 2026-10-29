@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\FuseBoard\Shared\RenderFuseBoardPdfAction;
 use App\Actions\Receipt\Shared\RenderReceiptCopyPdfAction;
+use App\Enums\FuseBoardTemplate;
 use App\Models\Document;
+use App\Models\FuseBoard;
 use App\Models\Receipt;
 use App\Models\Setting;
 use App\Models\SiteMedia;
@@ -57,6 +60,21 @@ class FileController extends Controller
         $name = Str::slug($document->type->label() . '-' . $document->number) . '.pdf';
 
         return $this->inline(Storage::disk('local')->path($document->pdf_path), 'application/pdf', $name);
+    }
+
+    /**
+     * Raspored osiguraca se ne cuva: PDF se pravi pri svakom otvaranju, u izabranom izgledu.
+     */
+    public function fuseBoard(FuseBoard $fuseBoard, int $template): Response
+    {
+        $pdf = RenderFuseBoardPdfAction::make()->handle($fuseBoard, FuseBoardTemplate::from($template));
+        $name = 'raspored-osiguraca-' . (Str::slug($fuseBoard->name) ?: $fuseBoard->id) . '.pdf';
+
+        return response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => "inline; filename=\"{$name}\"",
+            'Cache-Control' => 'private, no-store',
+        ]);
     }
 
     /**
